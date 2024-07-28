@@ -17,6 +17,9 @@
 		049237D22C55C11C004829E5 /* RandomVocabUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049237D12C55C11C004829E5 /* RandomVocabUITests.swift */; };
 		049237D42C55C11C004829E5 /* RandomVocabUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049237D32C55C11C004829E5 /* RandomVocabUITestsLaunchTests.swift */; };
 		049237E22C55C898004829E5 /* words.csv in Resources */ = {isa = PBXBuildFile; fileRef = 049237E12C55C898004829E5 /* words.csv */; };
+		049237E52C55CDF4004829E5 /* RandomWordPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049237E42C55CDF4004829E5 /* RandomWordPicker.swift */; };
+		049237E72C55CF1F004829E5 /* WordListReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049237E62C55CF1F004829E5 /* WordListReader.swift */; };
+		049237E92C55D0E7004829E5 /* RandomWordPickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049237E82C55D0E7004829E5 /* RandomWordPickerTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +54,9 @@
 		049237D12C55C11C004829E5 /* RandomVocabUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomVocabUITests.swift; sourceTree = "<group>"; };
 		049237D32C55C11C004829E5 /* RandomVocabUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomVocabUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		049237E12C55C898004829E5 /* words.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = words.csv; sourceTree = "<group>"; };
+		049237E42C55CDF4004829E5 /* RandomWordPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomWordPicker.swift; sourceTree = "<group>"; };
+		049237E62C55CF1F004829E5 /* WordListReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordListReader.swift; sourceTree = "<group>"; };
+		049237E82C55D0E7004829E5 /* RandomWordPickerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomWordPickerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +107,7 @@
 		049237AF2C55C11B004829E5 /* RandomVocab */ = {
 			isa = PBXGroup;
 			children = (
+				049237E32C55CDA3004829E5 /* Services */,
 				049237E02C55C238004829E5 /* Resources */,
 				049237BE2C55C11C004829E5 /* Info.plist */,
 			);
@@ -111,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				049237C72C55C11C004829E5 /* RandomVocabTests.swift */,
+				049237E82C55D0E7004829E5 /* RandomWordPickerTests.swift */,
 			);
 			path = RandomVocabTests;
 			sourceTree = "<group>";
@@ -136,6 +144,15 @@
 				049237B02C55C11B004829E5 /* AppDelegate.swift */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		049237E32C55CDA3004829E5 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				049237E42C55CDF4004829E5 /* RandomWordPicker.swift */,
+				049237E62C55CF1F004829E5 /* WordListReader.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -270,8 +287,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				049237E52C55CDF4004829E5 /* RandomWordPicker.swift in Sources */,
 				049237B52C55C11B004829E5 /* ViewController.swift in Sources */,
 				049237B12C55C11B004829E5 /* AppDelegate.swift in Sources */,
+				049237E72C55CF1F004829E5 /* WordListReader.swift in Sources */,
 				049237B32C55C11B004829E5 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -280,6 +299,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				049237E92C55D0E7004829E5 /* RandomWordPickerTests.swift in Sources */,
 				049237C82C55C11C004829E5 /* RandomVocabTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

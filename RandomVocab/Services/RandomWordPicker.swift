@@ -15,7 +15,7 @@ protocol AnyRandomWordPicker {
 final class RandomWordPicker: AnyRandomWordPicker {
     var wordListReader: AnyWordListReader
     
-    init(wordListReader: AnyWordListReader = WordListReaderFromCSV()) {
+    init(wordListReader: AnyWordListReader = WordListReaderFromCSV.shared) {
         self.wordListReader = wordListReader
     }
     

@@ -12,7 +12,15 @@ protocol AnyWordListReader {
 }
 
 final class WordListReaderFromCSV: AnyWordListReader {
+    static let shared: AnyWordListReader = WordListReaderFromCSV()
+    private var words: [String]? = nil
+    
+    private init() {}
+    
     func getWordList() -> [String]? {
+        if let words {
+            return words
+        }
         guard let path = Bundle.main.path(forResource: "words", ofType: "csv") else {
             print("CSV file not found.")
             return nil
@@ -20,7 +28,7 @@ final class WordListReaderFromCSV: AnyWordListReader {
         
         do {
             let content = try String(contentsOfFile: path)
-            let words = content.components(separatedBy: .newlines).filter { !$0.isEmpty }
+            words = content.components(separatedBy: .newlines).filter { !$0.isEmpty }
             return words
         } catch {
             print("Error reading CSV file: \(error.localizedDescription)")

@@ -20,6 +20,8 @@
 		049237E52C55CDF4004829E5 /* RandomWordPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049237E42C55CDF4004829E5 /* RandomWordPicker.swift */; };
 		049237E72C55CF1F004829E5 /* WordListReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049237E62C55CF1F004829E5 /* WordListReader.swift */; };
 		049237E92C55D0E7004829E5 /* RandomWordPickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049237E82C55D0E7004829E5 /* RandomWordPickerTests.swift */; };
+		04A515922C5680D50009FD44 /* WordNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A515912C5680D50009FD44 /* WordNetworkService.swift */; };
+		04BB10A22C569EEF00D9C653 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BB10A12C569EEF00D9C653 /* DataModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +59,8 @@
 		049237E42C55CDF4004829E5 /* RandomWordPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomWordPicker.swift; sourceTree = "<group>"; };
 		049237E62C55CF1F004829E5 /* WordListReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordListReader.swift; sourceTree = "<group>"; };
 		049237E82C55D0E7004829E5 /* RandomWordPickerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomWordPickerTests.swift; sourceTree = "<group>"; };
+		04A515912C5680D50009FD44 /* WordNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordNetworkService.swift; sourceTree = "<group>"; };
+		04BB10A12C569EEF00D9C653 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +111,7 @@
 		049237AF2C55C11B004829E5 /* RandomVocab */ = {
 			isa = PBXGroup;
 			children = (
+				04BB10A02C569ED300D9C653 /* Models */,
 				049237E32C55CDA3004829E5 /* Services */,
 				049237E02C55C238004829E5 /* Resources */,
 				049237BE2C55C11C004829E5 /* Info.plist */,
@@ -151,8 +156,17 @@
 			children = (
 				049237E42C55CDF4004829E5 /* RandomWordPicker.swift */,
 				049237E62C55CF1F004829E5 /* WordListReader.swift */,
+				04A515912C5680D50009FD44 /* WordNetworkService.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		04BB10A02C569ED300D9C653 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				04BB10A12C569EEF00D9C653 /* DataModel.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -287,10 +301,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04BB10A22C569EEF00D9C653 /* DataModel.swift in Sources */,
 				049237E52C55CDF4004829E5 /* RandomWordPicker.swift in Sources */,
 				049237B52C55C11B004829E5 /* ViewController.swift in Sources */,
 				049237B12C55C11B004829E5 /* AppDelegate.swift in Sources */,
 				049237E72C55CF1F004829E5 /* WordListReader.swift in Sources */,
+				04A515922C5680D50009FD44 /* WordNetworkService.swift in Sources */,
 				049237B32C55C11B004829E5 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -11,7 +11,7 @@ protocol AnyWordListReader {
     func getWordList() -> [String]?
 }
 
-class WordListReaderFromCSV: AnyWordListReader {
+final class WordListReaderFromCSV: AnyWordListReader {
     func getWordList() -> [String]? {
         guard let path = Bundle.main.path(forResource: "words", ofType: "csv") else {
             print("CSV file not found.")

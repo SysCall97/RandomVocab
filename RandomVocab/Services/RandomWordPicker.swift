@@ -12,7 +12,7 @@ protocol AnyRandomWordPicker {
     func getWord() -> String?
 }
 
-class RandomWordPicker: AnyRandomWordPicker {
+final class RandomWordPicker: AnyRandomWordPicker {
     var wordListReader: AnyWordListReader
     
     init(wordListReader: AnyWordListReader = WordListReaderFromCSV()) {

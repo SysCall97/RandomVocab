@@ -16,6 +16,7 @@
 		049237C82C55C11C004829E5 /* RandomVocabTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049237C72C55C11C004829E5 /* RandomVocabTests.swift */; };
 		049237D22C55C11C004829E5 /* RandomVocabUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049237D12C55C11C004829E5 /* RandomVocabUITests.swift */; };
 		049237D42C55C11C004829E5 /* RandomVocabUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049237D32C55C11C004829E5 /* RandomVocabUITestsLaunchTests.swift */; };
+		049237E22C55C898004829E5 /* words.csv in Resources */ = {isa = PBXBuildFile; fileRef = 049237E12C55C898004829E5 /* words.csv */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		049237CD2C55C11C004829E5 /* RandomVocabUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RandomVocabUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		049237D12C55C11C004829E5 /* RandomVocabUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomVocabUITests.swift; sourceTree = "<group>"; };
 		049237D32C55C11C004829E5 /* RandomVocabUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomVocabUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		049237E12C55C898004829E5 /* words.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = words.csv; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +127,7 @@
 		049237E02C55C238004829E5 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				049237E12C55C898004829E5 /* words.csv */,
 				049237B92C55C11C004829E5 /* Assets.xcassets */,
 				049237BB2C55C11C004829E5 /* LaunchScreen.storyboard */,
 				049237B62C55C11B004829E5 /* Main.storyboard */,
@@ -241,6 +244,7 @@
 			files = (
 				049237BD2C55C11C004829E5 /* LaunchScreen.storyboard in Resources */,
 				049237BA2C55C11C004829E5 /* Assets.xcassets in Resources */,
+				049237E22C55C898004829E5 /* words.csv in Resources */,
 				049237B82C55C11B004829E5 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

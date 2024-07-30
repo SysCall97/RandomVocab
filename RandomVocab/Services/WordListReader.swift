@@ -8,27 +8,23 @@
 import Foundation
 
 protocol AnyWordListReader {
-    func getWordList() -> [String]?
+    func getWordList(from file: FileNameContainer.File) -> [String]?
 }
 
 final class WordListReaderFromCSV: AnyWordListReader {
     static let shared: AnyWordListReader = WordListReaderFromCSV()
-    private var words: [String]? = nil
     
     private init() {}
     
-    func getWordList() -> [String]? {
-        if let words {
-            return words
-        }
-        guard let path = Bundle.main.path(forResource: "words", ofType: "csv") else {
+    func getWordList(from file: FileNameContainer.File) -> [String]? {
+        guard let path = Bundle.main.path(forResource: file.name, ofType: file.type) else {
             print("CSV file not found.")
             return nil
         }
         
         do {
             let content = try String(contentsOfFile: path)
-            words = content.components(separatedBy: .newlines).filter { !$0.isEmpty }
+            let words = content.components(separatedBy: .newlines).filter { !$0.isEmpty }
             return words
         } catch {
             print("Error reading CSV file: \(error.localizedDescription)")

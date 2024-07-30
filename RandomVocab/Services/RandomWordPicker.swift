@@ -9,7 +9,7 @@ import Foundation
 
 protocol AnyRandomWordPicker {
     var wordListReader: AnyWordListReader { get set }
-    func getWord() -> String?
+    func getWord(from file: FileNameContainer.File) -> String?
 }
 
 final class RandomWordPicker: AnyRandomWordPicker {
@@ -20,8 +20,8 @@ final class RandomWordPicker: AnyRandomWordPicker {
     }
     
     
-    func getWord() -> String? {
-        if let wordList: [String] = wordListReader.getWordList() {
+    func getWord(from file: FileNameContainer.File) -> String? {
+        if let wordList: [String] = wordListReader.getWordList(from: file) {
             if wordList.isEmpty {
                 return nil
             }

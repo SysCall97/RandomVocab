@@ -8,12 +8,19 @@
 import Foundation
 
 protocol AnyDictionaryNetworkService {
+    var baseUrl: String { get set }
     func getMeaning(for word: String) async throws -> [APIResponseDataModel]
 }
 
 final class DictionaryAPINetworkService: AnyDictionaryNetworkService {
+    var baseUrl: String
+    
+    init(baseUrl: String = BaseUrl.dictionaryAPI) {
+        self.baseUrl = baseUrl
+    }
+    
     func getMeaning(for word: String) async throws -> [APIResponseDataModel] {
-        let url: URL = URL(string: "https://api.dictionaryapi.dev/api/v2/entries/en/\(word)")!
+        let url: URL = URL(string: "\(baseUrl)\(word)")!
         
         var urlRequest: URLRequest = URLRequest(url: url)
         
@@ -34,9 +41,4 @@ final class DictionaryAPINetworkService: AnyDictionaryNetworkService {
             throw NetworkError.invalidData
         }
     }
-}
-
-enum NetworkError: Error {
-    case serverError
-    case invalidData
 }

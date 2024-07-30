@@ -19,3 +19,7 @@ class FileNameContainer {
     
     static let wordListCSV: File = File(name: "words", type: "csv")
 }
+
+class CommonConstants {
+    static let maxNumberOfWordsToPick = 5
+}

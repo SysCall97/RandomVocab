@@ -8,26 +8,15 @@
 import Foundation
 
 protocol AnyRandomWordPicker {
-    var wordListReader: AnyWordListReader { get set }
-    func getWord(from file: FileNameContainer.File) -> String?
+    func getWords(from words: [String]) -> [String]
 }
 
 final class RandomWordPicker: AnyRandomWordPicker {
-    var wordListReader: AnyWordListReader
     
-    init(wordListReader: AnyWordListReader = WordListReaderFromCSV.shared) {
-        self.wordListReader = wordListReader
-    }
-    
-    
-    func getWord(from file: FileNameContainer.File) -> String? {
-        if let wordList: [String] = wordListReader.getWordList(from: file) {
-            if wordList.isEmpty {
-                return nil
-            }
-            return wordList.randomElement() ?? nil
-        }
-        return nil
+    func getWords(from words: [String]) -> [String] {
+        let shuffledArray = words.shuffled()
+        let resultArray = Array(shuffledArray.prefix(5))
+        return resultArray
     }
     
     

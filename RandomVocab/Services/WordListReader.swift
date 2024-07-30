@@ -12,9 +12,6 @@ protocol AnyWordListReader {
 }
 
 final class WordListReaderFromCSV: AnyWordListReader {
-    static let shared: AnyWordListReader = WordListReaderFromCSV()
-    
-    private init() {}
     
     func getWordList(from file: FileNameContainer.File) -> [String]? {
         guard let path = Bundle.main.path(forResource: file.name, ofType: file.type) else {

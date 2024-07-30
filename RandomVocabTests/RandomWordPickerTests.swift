@@ -10,61 +10,30 @@ import XCTest
 
 final class RandomWordPickerTests: XCTestCase {
  
-    let wordList: [String] = ["one", "two", "three", "four", "five"]
+    let wordList: [String] = ["one", "two", "three", "four", "five", "six", "seven", "eight"]
 
-    class MockWordReader: AnyWordListReader {
-        func getWordList(from file: RandomVocab.FileNameContainer.File) -> [String]? {
-            wordList
-        }
-        
-        let wordList: [String]?
-        
-        init(wordList: [String]? = nil) {
-            self.wordList = wordList
-        }
-        
-        
-    }
-    
-    func test_RandomWordPickerWithWordListContainingWords() {
-        let sut: AnyRandomWordPicker = RandomWordPicker(wordListReader: MockWordReader(wordList: wordList))
-        
-        for _ in 0..<20 {
-            if let randomWord = sut.getWord(from: FileNameContainer.File(name: "", type: "")) {
-                XCTAssertTrue(wordList.contains(randomWord), "The picked word should be in the word list")
-            }
-        }
-    }
-    
-    func test_RandomWordPickerWithZeroContainingWord() {
-        let sut: AnyRandomWordPicker = RandomWordPicker(wordListReader: MockWordReader(wordList: []))
-        let randomWord = sut.getWord(from: FileNameContainer.File(name: "", type: ""))
-        
-        XCTAssertNil(randomWord, "It should retrun nil")
-    }
-    
-    func test_RandomWordPickerWithNILWordList() {
-        let sut: AnyRandomWordPicker = RandomWordPicker(wordListReader: MockWordReader(wordList: nil))
-        let randomWord = sut.getWord(from: FileNameContainer.File(name: "", type: ""))
-        
-        XCTAssertNil(randomWord, "It should retrun nil")
-    }
-    
-    func test_RandomWordPickerWithNILWordListAfterGettingDataOnPreviousNotNILCall() {
+    func test_RandomWordPickerWordsCount() {
         let sut: AnyRandomWordPicker = RandomWordPicker()
-        let _ = sut.getWord(from: FileNameContainer.wordListCSV)
-        let randomWord = sut.getWord(from: FileNameContainer.File(name: "", type: ""))
-        
-        XCTAssertNil(randomWord, "It should retrun nil")
+        let list = sut.getWords(from: wordList)
+        XCTAssertEqual(list.count, CommonConstants.maxNumberOfWordsToPick, "RandomWordPicker must return the list of size \(CommonConstants.maxNumberOfWordsToPick)")
     }
     
-    func test_RandomWordPickerWithCSV() {
+    func test_RandomWordPickerWithNoWordListAsParam() {
         let sut: AnyRandomWordPicker = RandomWordPicker()
+        let list = sut.getWords(from: [])
+        XCTAssertEqual(list.count, 0, "RandomWordPicker must return a empty list")
+    }
+    
+    func test_RandomWordPickerWithSameElementsInTheSameDay() {
+        var sut: AnyRandomWordPicker = RandomWordPicker()
+        let list1 = sut.getWords(from: wordList)
+        sut = RandomWordPicker()
+        let list2 = sut.getWords(from: wordList)
         
-        for _ in 0..<20 {
-            let randomWord = sut.getWord(from: FileNameContainer.wordListCSV)
-            print(randomWord as Any)
-            XCTAssertTrue(randomWord is String?, "Random word should be string")
-        }
+        
+        let sortedList1 = list1.sorted()
+        let sortedList2 = list2.sorted()
+        XCTAssertEqual(sortedList1, sortedList2, "The lists should contain the same elements")
+        
     }
 }

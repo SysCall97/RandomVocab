@@ -28,7 +28,7 @@ class WordManager: AnyWordManager {
     var wordMeaningFetchingService: AnyDictionaryNetworkService
     var randomWordPicker: AnyRandomWordPicker
     var dictionary = [String: WordViewModel]()
-    var currentPosition: Int = 0
+    var currentPosition: Int = -1
     var selectedWordsForToday = [String]()
     
     init(wordReaderService: AnyWordListReader = WordListReaderFromCSV(),
@@ -47,7 +47,7 @@ class WordManager: AnyWordManager {
     
     func getNextWord() async -> WordViewModel? {
         currentPosition += 1
-        if currentPosition >= CommonConstants.maxNumberOfWordsToPick {
+        if currentPosition >= selectedWordsForToday.count {
             currentPosition -= 1
             return nil
         }

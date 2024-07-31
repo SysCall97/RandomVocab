@@ -29,9 +29,14 @@ final class DictionaryAPINetworkService: AnyDictionaryNetworkService {
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
         
         guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            if let response = response as? HTTPURLResponse {
+                
+                if response.statusCode == 404 {
+                    throw NetworkError.contentNotFound
+                }
+            }
             throw NetworkError.serverError
         }
-        print(data)
         do {
             let decoder = JSONDecoder()
             

@@ -9,6 +9,8 @@ import XCTest
 @testable import RandomVocab
 
 final class WordManagerTests: XCTestCase {
+    
+    let words = ["blood", "programming", "money", "study"]
 
     class MockWordListReader: AnyWordListReader {
         let words: [String]?
@@ -47,9 +49,19 @@ final class WordManagerTests: XCTestCase {
     
     private func getMockDictionaryService() -> MockDictionaryNetworkService {
         let mockDictionaryService = MockDictionaryNetworkService()
-        mockDictionaryService.mockResponses["blood"] = [
-            APIResponseDataModel(word: "blood", phonetics: [APIResponseDataModel.Phonetic(text: "", audio: "")], meanings: [APIResponseDataModel.Meaning(partOfSpeech: "", definitions: [APIResponseDataModel.Meaning.Definition(definition: "")])])
+        
+        mockDictionaryService.mockResponses[words[0]] = [
+            APIResponseDataModel(word: words[0], phonetics: [APIResponseDataModel.Phonetic(text: "", audio: "")], meanings: [APIResponseDataModel.Meaning(partOfSpeech: "", definitions: [APIResponseDataModel.Meaning.Definition(definition: "")])])
         ]
+        
+        mockDictionaryService.mockResponses[words[1]] = [
+            APIResponseDataModel(word: words[1], phonetics: [APIResponseDataModel.Phonetic(text: "", audio: "")], meanings: [APIResponseDataModel.Meaning(partOfSpeech: "", definitions: [APIResponseDataModel.Meaning.Definition(definition: "")])])
+        ]
+        
+        mockDictionaryService.mockResponses[words[3]] = [
+            APIResponseDataModel(word: words[3], phonetics: [APIResponseDataModel.Phonetic(text: "", audio: "")], meanings: [APIResponseDataModel.Meaning(partOfSpeech: "", definitions: [APIResponseDataModel.Meaning.Definition(definition: "")])])
+        ]
+        
         
         return mockDictionaryService
     }
@@ -96,17 +108,64 @@ final class WordManagerTests: XCTestCase {
     
     func test_WordManagerGetNextWordForMultipleTimes() async {
         let sut: WordManager =
-        WordManager(wordReaderService: MockWordListReader(words: ["blood"]),
+        WordManager(wordReaderService: MockWordListReader(words: words),
                     randomWordPicker: MockRandomWordPicker(),
                     wordMeaningFetchingService: getMockDictionaryService())
         
         var res = await sut.getNextWord()
         XCTAssertNotNil(res, "Output should not be nil")
+        XCTAssertEqual(res!.word, words[0], "Name didn't matched")
+        
+        res = await sut.getNextWord()
+        XCTAssertNotNil(res, "Output should be nil")
+        XCTAssertEqual(res!.word, words[1], "Name didn't matched")
         
         res = await sut.getNextWord()
         XCTAssertNil(res, "Output should be nil")
         
         res = await sut.getNextWord()
+        XCTAssertNotNil(res, "Output should be nil")
+        XCTAssertEqual(res!.word, words[3], "Name didn't matched")
+    }
+    
+    func test_WordManagerGetPrevWordWithEmptyStringCollectionInTheFile() async {
+        let sut: WordManager =
+        WordManager(wordReaderService: MockWordListReader(words: nil),
+                    randomWordPicker: MockRandomWordPicker(),
+                    wordMeaningFetchingService: getMockDictionaryService())
+        
+        let res = await sut.getPrevWord()
         XCTAssertNil(res, "Output should be nil")
     }
+    
+    func test_WordManagerGetPrevWordWithZeroStringCollection() async {
+        let sut: WordManager =
+        WordManager(wordReaderService: MockWordListReader(words: []),
+                    randomWordPicker: MockRandomWordPicker(),
+                    wordMeaningFetchingService: getMockDictionaryService())
+        
+        let res = await sut.getPrevWord()
+        XCTAssertNil(res, "Output should be nil")
+    }
+    
+    func test_WordManagerGetPrevWordNotAvailableWordInTheDictionary() async {
+        let sut: WordManager =
+        WordManager(wordReaderService: MockWordListReader(words: ["bleed"]),
+                    randomWordPicker: MockRandomWordPicker(),
+                    wordMeaningFetchingService: getMockDictionaryService())
+        
+        let res = await sut.getNextWord()
+        XCTAssertNil(res, "Output should be nil")
+    }
+    
+    func test_WordManagerGetPrevWordAvailableWordInTheDictionary() async {
+        let sut: WordManager =
+        WordManager(wordReaderService: MockWordListReader(words: ["blood"]),
+                    randomWordPicker: MockRandomWordPicker(),
+                    wordMeaningFetchingService: getMockDictionaryService())
+        
+        let res = await sut.getPrevWord()
+        XCTAssertNil(res, "Output should be nil")
+    }
+    
 }

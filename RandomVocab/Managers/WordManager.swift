@@ -63,7 +63,7 @@ class WordManager: AnyWordManager {
     
     func getPrevWord() async -> WordViewModel? {
         currentPosition -= 1
-        if currentPosition >= CommonConstants.maxNumberOfWordsToPick {
+        if currentPosition < 0 {
             currentPosition += 1
             return nil
         }

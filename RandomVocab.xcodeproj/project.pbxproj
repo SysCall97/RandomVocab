@@ -28,6 +28,7 @@
 		04DF4A552C58D911008298E9 /* WordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DF4A542C58D911008298E9 /* WordManager.swift */; };
 		04DF4A572C58D987008298E9 /* WordManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DF4A562C58D987008298E9 /* WordManagerTests.swift */; };
 		04DF4A5A2C58F8F2008298E9 /* WordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DF4A592C58F8F2008298E9 /* WordModel.swift */; };
+		04E473AC2C5CB1A4002C962D /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E473AB2C5CB1A4002C962D /* DatabaseService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +74,7 @@
 		04DF4A542C58D911008298E9 /* WordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordManager.swift; sourceTree = "<group>"; };
 		04DF4A562C58D987008298E9 /* WordManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordManagerTests.swift; sourceTree = "<group>"; };
 		04DF4A592C58F8F2008298E9 /* WordModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordModel.swift; sourceTree = "<group>"; };
+		04E473AB2C5CB1A4002C962D /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +185,7 @@
 				049237E42C55CDF4004829E5 /* RandomWordPicker.swift */,
 				049237E62C55CF1F004829E5 /* WordListReader.swift */,
 				04A515912C5680D50009FD44 /* WordNetworkService.swift */,
+				04E473AB2C5CB1A4002C962D /* DatabaseService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -349,6 +352,7 @@
 				049237B12C55C11B004829E5 /* AppDelegate.swift in Sources */,
 				043E39642C58A39A005383E2 /* CommonConstants.swift in Sources */,
 				04DF4A552C58D911008298E9 /* WordManager.swift in Sources */,
+				04E473AC2C5CB1A4002C962D /* DatabaseService.swift in Sources */,
 				04DF4A5A2C58F8F2008298E9 /* WordModel.swift in Sources */,
 				043E39622C58A346005383E2 /* Errors.swift in Sources */,
 				049237E72C55CF1F004829E5 /* WordListReader.swift in Sources */,

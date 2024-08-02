@@ -17,3 +17,8 @@ enum NetworkError: Error {
 enum URLError: Error {
     case urlInitializationError
 }
+
+enum DatabaseError: Error {
+    case fetchError
+    case deleteError
+}

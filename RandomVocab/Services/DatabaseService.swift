@@ -6,3 +6,80 @@
 //
 
 import Foundation
+import SwiftData
+
+class DatabaseService {
+    static var shared = DatabaseService()
+    var container: ModelContainer?
+    var context: ModelContext?
+    
+    private init() {
+        do {
+            let schema = Schema([
+                WordModel.self
+            ])
+            
+            let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+            container = try ModelContainer(for: schema, configurations: modelConfiguration)
+            
+            if let container {
+                context = ModelContext(container)
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    func save(word: WordModel) {
+        do {
+            let existingWords = try fetchWord(with: word.id)
+            if existingWords?.isEmpty == false {
+                print("Word with ID \(word.id) already exists")
+                return
+            }
+            context?.insert(word)
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    private func fetchWord(with id: String) throws -> [WordModel]? {
+        let predicate = #Predicate<WordModel> { $0.id == id }
+        let descriptor = FetchDescriptor<WordModel>(predicate: predicate)
+        do {
+            return try context?.fetch(descriptor)
+        } catch {
+            throw DatabaseError.fetchError
+        }
+        
+    }
+    
+    func fetchWords() throws -> [WordModel]? {
+        let descriptor = FetchDescriptor<WordModel>()
+        
+        do {
+            let data = try context?.fetch(descriptor)
+            return data
+        } catch {
+            throw DatabaseError.fetchError
+        }
+    }
+    
+    func delete(word: WordModel) throws {
+        do {
+            context?.delete(word)
+            try context?.save()
+        } catch {
+            throw DatabaseError.deleteError
+        }
+    }
+    
+    func isExists(word: WordModel) throws -> Bool {
+        do {
+            let existingWords = try fetchWord(with: word.id)
+            return existingWords?.isEmpty == false
+        } catch {
+            throw error
+        }
+    }
+}

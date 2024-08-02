@@ -17,9 +17,9 @@ protocol AnyWordManager {
     var wordReaderService: AnyWordListReader { get set }
     var wordMeaningFetchingService: AnyDictionaryNetworkService { get set }
     var randomWordPicker: AnyRandomWordPicker { get set }
-    func getNextWord() async -> WordViewModel?
-    func getPrevWord() async -> WordViewModel?
-    func markedAsFavourite(_ wordViewMode: WordViewModel)
+    func getNextWord() async -> WordModel?
+    func getPrevWord() async -> WordModel?
+    func markedAsFavourite(_ wordViewMode: WordModel)
     
 }
 
@@ -27,7 +27,7 @@ class WordManager: AnyWordManager {
     var wordReaderService: AnyWordListReader
     var wordMeaningFetchingService: AnyDictionaryNetworkService
     var randomWordPicker: AnyRandomWordPicker
-    var dictionary = [String: WordViewModel]()
+    var dictionary = [String: WordModel]()
     var currentPosition: Int = -1
     var selectedWordsForToday = [String]()
     
@@ -45,7 +45,7 @@ class WordManager: AnyWordManager {
         
     }
     
-    func getNextWord() async -> WordViewModel? {
+    func getNextWord() async -> WordModel? {
         currentPosition += 1
         if currentPosition >= selectedWordsForToday.count {
             currentPosition -= 1
@@ -61,7 +61,7 @@ class WordManager: AnyWordManager {
         return await createViewModel(for: word)
     }
     
-    func getPrevWord() async -> WordViewModel? {
+    func getPrevWord() async -> WordModel? {
         currentPosition -= 1
         if currentPosition < 0 {
             currentPosition += 1
@@ -77,14 +77,14 @@ class WordManager: AnyWordManager {
         return await createViewModel(for: word)
     }
     
-    func markedAsFavourite(_ wordViewMode: WordViewModel) {
+    func markedAsFavourite(_ wordViewMode: WordModel) {
         //
     }
     
-    private func createViewModel(for word: String) async -> WordViewModel? {
+    private func createViewModel(for word: String) async -> WordModel? {
         do {
             let response = try await wordMeaningFetchingService.getMeaning(for: word)
-            self.dictionary[word] = WordViewModel(from: response)
+            self.dictionary[word] = WordModel(from: response)
             return self.dictionary[word]
         } catch {
             return nil

@@ -27,7 +27,7 @@
 		04BB10A22C569EEF00D9C653 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BB10A12C569EEF00D9C653 /* DataModel.swift */; };
 		04DF4A552C58D911008298E9 /* WordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DF4A542C58D911008298E9 /* WordManager.swift */; };
 		04DF4A572C58D987008298E9 /* WordManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DF4A562C58D987008298E9 /* WordManagerTests.swift */; };
-		04DF4A5A2C58F8F2008298E9 /* WordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DF4A592C58F8F2008298E9 /* WordViewModel.swift */; };
+		04DF4A5A2C58F8F2008298E9 /* WordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DF4A592C58F8F2008298E9 /* WordModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,7 +72,7 @@
 		04BB10A12C569EEF00D9C653 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		04DF4A542C58D911008298E9 /* WordManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordManager.swift; sourceTree = "<group>"; };
 		04DF4A562C58D987008298E9 /* WordManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordManagerTests.swift; sourceTree = "<group>"; };
-		04DF4A592C58F8F2008298E9 /* WordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordViewModel.swift; sourceTree = "<group>"; };
+		04DF4A592C58F8F2008298E9 /* WordModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -206,7 +206,7 @@
 		04DF4A582C58F8E1008298E9 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				04DF4A592C58F8F2008298E9 /* WordViewModel.swift */,
+				04DF4A592C58F8F2008298E9 /* WordModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -349,7 +349,7 @@
 				049237B12C55C11B004829E5 /* AppDelegate.swift in Sources */,
 				043E39642C58A39A005383E2 /* CommonConstants.swift in Sources */,
 				04DF4A552C58D911008298E9 /* WordManager.swift in Sources */,
-				04DF4A5A2C58F8F2008298E9 /* WordViewModel.swift in Sources */,
+				04DF4A5A2C58F8F2008298E9 /* WordModel.swift in Sources */,
 				043E39622C58A346005383E2 /* Errors.swift in Sources */,
 				049237E72C55CF1F004829E5 /* WordListReader.swift in Sources */,
 				04A515922C5680D50009FD44 /* WordNetworkService.swift in Sources */,

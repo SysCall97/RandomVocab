@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class WordViewModel {
+class WordModel {
     var id: String
     let word: String
     let phonetics: APIResponseDataModel.Phonetic

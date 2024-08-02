@@ -158,7 +158,7 @@ final class WordManagerTests: XCTestCase {
         XCTAssertNil(res, "Output should be nil")
     }
     
-    func test_WordManagerGetPrevWordAvailableWordInTheDictionary() async {
+    func test_WordManagerGetPrevWordCallWithNoNextWordCallAtFirst() async {
         let sut: WordManager =
         WordManager(wordReaderService: MockWordListReader(words: ["blood"]),
                     randomWordPicker: MockRandomWordPicker(),
@@ -166,6 +166,31 @@ final class WordManagerTests: XCTestCase {
         
         let res = await sut.getPrevWord()
         XCTAssertNil(res, "Output should be nil")
+    }
+    
+    func test_WordManagerGetWordForWhomNetwordCallDoneAlready() async {
+        let sut: WordManager =
+        WordManager(wordReaderService: MockWordListReader(words: words),
+                    randomWordPicker: MockRandomWordPicker(),
+                    wordMeaningFetchingService: getMockDictionaryService())
+        
+        let _ = await sut.getNextWord() // 1st word with API call
+        let _ = await sut.getNextWord() // 2nd word with API call
+        var startTime = Date()
+        let _ = await sut.getPrevWord() // 1st word without API call
+        var endTime = Date()
+        
+        var totalTime = endTime.timeIntervalSince(startTime)
+        
+        XCTAssertTrue(totalTime < 1.0, "It should not call API for already existing word")
+        
+        startTime = Date()
+        let _ = await sut.getNextWord() // 2nd word without API call
+        endTime = Date()
+        
+        totalTime = endTime.timeIntervalSince(startTime)
+        
+        XCTAssertTrue(totalTime < 1.0, "It should not call API for already existing word")
     }
     
 }

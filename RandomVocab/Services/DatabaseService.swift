@@ -8,7 +8,14 @@
 import Foundation
 import SwiftData
 
-class DatabaseService {
+protocol AnyDatabaseService {
+    func save(word: WordModel)
+    func fetchWords() throws -> [WordModel]?
+    func delete(word: WordModel) throws
+    func isExists(word: WordModel) throws -> Bool
+}
+
+class DatabaseService: AnyDatabaseService {
     static var shared = DatabaseService()
     var container: ModelContainer?
     var context: ModelContext?

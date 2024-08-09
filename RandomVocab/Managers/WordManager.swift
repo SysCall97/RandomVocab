@@ -14,16 +14,19 @@ import Foundation
         - provide max 5 words per day
  */
 protocol AnyWordManager {
+    var databaseService: AnyDatabaseService { get set }
     var wordReaderService: AnyWordListReader { get set }
     var wordMeaningFetchingService: AnyDictionaryNetworkService { get set }
     var randomWordPicker: AnyRandomWordPicker { get set }
     func getNextWord() async -> WordModel?
     func getPrevWord() async -> WordModel?
-    func markedAsFavourite(_ wordViewMode: WordModel)
+    func markedAsFavourite(_ wordMode: WordModel)
+    func getFavouriteWords() -> [WordModel]?
     
 }
 
 class WordManager: AnyWordManager {
+    var databaseService: AnyDatabaseService
     var wordReaderService: AnyWordListReader
     var wordMeaningFetchingService: AnyDictionaryNetworkService
     var randomWordPicker: AnyRandomWordPicker
@@ -31,12 +34,14 @@ class WordManager: AnyWordManager {
     var currentPosition: Int = -1
     var selectedWordsForToday = [String]()
     
-    init(wordReaderService: AnyWordListReader = WordListReaderFromCSV(),
+    init(databaseService: AnyDatabaseService = DatabaseService.shared,
+         wordReaderService: AnyWordListReader = WordListReaderFromCSV(),
          randomWordPicker: AnyRandomWordPicker = RandomWordPicker(),
          wordMeaningFetchingService: AnyDictionaryNetworkService = DictionaryAPINetworkService()) {
         self.wordReaderService = wordReaderService
         self.randomWordPicker = randomWordPicker
         self.wordMeaningFetchingService = wordMeaningFetchingService
+        self.databaseService = databaseService
         
         if let wordList = wordReaderService.getWordList(from: FileNameContainer.wordListCSV) {
             selectedWordsForToday = randomWordPicker.getWords(from: wordList)
@@ -77,8 +82,18 @@ class WordManager: AnyWordManager {
         return await createViewModel(for: word)
     }
     
-    func markedAsFavourite(_ wordViewMode: WordModel) {
-        //
+    func markedAsFavourite(_ wordMode: WordModel) {
+        databaseService.save(word: wordMode)
+    }
+    
+    func getFavouriteWords() -> [WordModel]? {
+        do {
+            let words = try databaseService.fetchWords()
+            return words
+            
+        } catch {
+            return nil
+        }
     }
     
     private func createViewModel(for word: String) async -> WordModel? {

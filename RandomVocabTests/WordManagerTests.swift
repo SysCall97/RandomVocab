@@ -193,4 +193,20 @@ final class WordManagerTests: XCTestCase {
         XCTAssertTrue(totalTime < 1.0, "It should not call API for already existing word")
     }
     
+    func test_WordManagerFavouriteWordsSetGet() async {
+        let sut: WordManager =
+        WordManager(wordReaderService: MockWordListReader(words: words),
+                    randomWordPicker: MockRandomWordPicker(),
+                    wordMeaningFetchingService: getMockDictionaryService())
+        var word = await sut.getNextWord()
+        sut.markedAsFavourite(word!)
+        word = await sut.getNextWord()
+        sut.markedAsFavourite(word!)
+        
+        let favouriteWords = sut.getFavouriteWords()
+        XCTAssertNotNil(favouriteWords, "Favourite words should not be nil")
+        XCTAssertTrue(favouriteWords?.count == 2, "There are 3 fav words")
+        
+    }
+    
 }

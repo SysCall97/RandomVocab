@@ -14,7 +14,7 @@ import Foundation
         - provide max 5 words per day
  */
 protocol AnyWordManager {
-    var databaseService: AnyDatabaseService { get set }
+    var databaseService: AnyDatabaseService? { get set }
     var wordReaderService: AnyWordListReader { get set }
     var wordMeaningFetchingService: AnyDictionaryNetworkService { get set }
     var randomWordPicker: AnyRandomWordPicker { get set }
@@ -26,7 +26,7 @@ protocol AnyWordManager {
 }
 
 class WordManager: AnyWordManager {
-    var databaseService: AnyDatabaseService
+    var databaseService: AnyDatabaseService?
     var wordReaderService: AnyWordListReader
     var wordMeaningFetchingService: AnyDictionaryNetworkService
     var randomWordPicker: AnyRandomWordPicker
@@ -34,7 +34,7 @@ class WordManager: AnyWordManager {
     var currentPosition: Int = -1
     var selectedWordsForToday = [String]()
     
-    init(databaseService: AnyDatabaseService = DatabaseService.shared,
+    init(databaseService: AnyDatabaseService? = DatabaseService.shared,
          wordReaderService: AnyWordListReader = WordListReaderFromCSV(),
          randomWordPicker: AnyRandomWordPicker = RandomWordPicker(),
          wordMeaningFetchingService: AnyDictionaryNetworkService = DictionaryAPINetworkService()) {
@@ -43,11 +43,30 @@ class WordManager: AnyWordManager {
         self.wordMeaningFetchingService = wordMeaningFetchingService
         self.databaseService = databaseService
         
-        if let wordList = wordReaderService.getWordList(from: FileNameContainer.wordListCSV) {
-            selectedWordsForToday = randomWordPicker.getWords(from: wordList)
-            
+        self.fetchTodaysWords()
+        
+    }
+    
+    private func fetchTodaysWords() {
+        let formattedDate = DateFormatter().getFormattedCurrentDateString()
+        do {
+            if let selectedWords = try databaseService?.fetchSelectedWords(with: formattedDate) {
+                self.selectedWordsForToday = randomWordPicker.getWords(from: selectedWords.words)
+            } else {
+                self.selectWordsFromFile()
+            }
+        } catch {
+            self.selectWordsFromFile()
         }
         
+    }
+    
+    private func selectWordsFromFile() {
+        if let wordList = wordReaderService.getWordList(from: FileNameContainer.wordListCSV) {
+            selectedWordsForToday = randomWordPicker.getWords(from: wordList)
+            let selectedWords = SelectedWords(words: selectedWordsForToday)
+            databaseService?.save(selectedWords: selectedWords)
+        }
     }
     
     func getNextWord() async -> WordModel? {
@@ -83,12 +102,12 @@ class WordManager: AnyWordManager {
     }
     
     func markedAsFavourite(_ wordMode: WordModel) {
-        databaseService.save(word: wordMode)
+        databaseService?.save(word: wordMode)
     }
     
     func getFavouriteWords() -> [WordModel]? {
         do {
-            let words = try databaseService.fetchWords()
+            let words = try databaseService?.fetchWords()
             return words
             
         } catch {

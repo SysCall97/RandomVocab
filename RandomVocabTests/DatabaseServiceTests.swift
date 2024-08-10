@@ -9,9 +9,10 @@ import XCTest
 @testable import RandomVocab
 
 final class DatabaseServiceTests: XCTestCase {
+    let words = ["blood", "programming", "money", "study"]
     
     private func getAPIResponseModels() -> [[APIResponseDataModel]] {
-        let words = ["blood", "programming", "money", "study"]
+        
         let res = [
             APIResponseDataModel(word: words[0], phonetics: [APIResponseDataModel.Phonetic(text: "", audio: "")], meanings: [APIResponseDataModel.Meaning(partOfSpeech: "", definitions: [APIResponseDataModel.Meaning.Definition(definition: "")])])
         ]
@@ -65,6 +66,45 @@ final class DatabaseServiceTests: XCTestCase {
             XCTAssertFalse(try sut.isExists(word: modelToDelete), "Model should not exist after delete")
         } catch {
             XCTFail("It shouldn't be failed")
+        }
+    }
+    
+    func test_DatabaseServiceSaveSelectedWords() {
+        let sut: AnyDatabaseService = DatabaseService.shared
+        let selectedWords = SelectedWords(words: words)
+        sut.save(selectedWords: selectedWords)
+        do {
+            let s = try sut.fetchSelectedWords(with: selectedWords.id)
+            XCTAssertNotNil(s, "selected words should not be nil")
+        } catch {
+            XCTFail("No error should be thrown here")
+        }
+    }
+    
+    private func getFutureDate() -> String? {
+        let currentDate = Date()
+
+        if let futureDate = Calendar.current.date(byAdding: .year, value: 1, to: currentDate) {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd/MM/yy"
+            let formattedDate = dateFormatter.string(from: futureDate)
+
+            return formattedDate
+        }
+        return nil
+    }
+    
+    func test_DatabaseServiceGetUnsetSelectedWords() {
+        let sut: AnyDatabaseService = DatabaseService.shared
+        let selectedWords = SelectedWords(words: words)
+//        sut.save(selectedWords: selectedWords)
+        if let futureDate = self.getFutureDate() {
+            do {
+                let s = try sut.fetchSelectedWords(with: futureDate)
+                XCTAssertNil(s, "selected words should be nil")
+            } catch {
+                XCTFail("No error should be thrown here")
+            }
         }
     }
 

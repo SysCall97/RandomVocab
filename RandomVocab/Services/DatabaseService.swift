@@ -13,6 +13,9 @@ protocol AnyDatabaseService {
     func fetchWords() throws -> [WordModel]?
     func delete(word: WordModel) throws
     func isExists(word: WordModel) throws -> Bool
+    
+    func save(selectedWords: SelectedWords)
+    func fetchSelectedWords(with id: String) throws -> SelectedWords?
 }
 
 class DatabaseService: AnyDatabaseService {
@@ -23,7 +26,8 @@ class DatabaseService: AnyDatabaseService {
     private init() {
         do {
             let schema = Schema([
-                WordModel.self
+                WordModel.self,
+                SelectedWords.self
             ])
             
             let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
@@ -51,14 +55,14 @@ class DatabaseService: AnyDatabaseService {
     }
     
     private func fetchWord(with id: String) throws -> [WordModel]? {
-        let predicate = #Predicate<WordModel> { $0.id == id }
+        let predicate: Predicate<WordModel> = #Predicate { $0.id == id }
         let descriptor = FetchDescriptor<WordModel>(predicate: predicate)
         do {
-            return try context?.fetch(descriptor)
+            let result: [WordModel]? = try context?.fetch(descriptor)
+            return result
         } catch {
             throw DatabaseError.fetchError
         }
-        
     }
     
     func fetchWords() throws -> [WordModel]? {
@@ -87,6 +91,32 @@ class DatabaseService: AnyDatabaseService {
             return existingWords?.isEmpty == false
         } catch {
             throw error
+        }
+    }
+}
+
+extension DatabaseService {
+    func save(selectedWords: SelectedWords) {
+        do {
+            if let existingWords = try fetchSelectedWords(with: selectedWords.id) {
+                print("Word with ID \(selectedWords.id) already exists")
+                return
+            }
+            context?.insert(selectedWords)
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    func fetchSelectedWords(with id: String) throws -> SelectedWords? {
+        let predicate: Predicate<SelectedWords> = #Predicate { $0.id == id }
+        let descriptor = FetchDescriptor<SelectedWords>(predicate: predicate)
+        
+        do {
+            let result: SelectedWords? = try context?.fetch(descriptor).first
+            return result
+        } catch {
+            throw DatabaseError.fetchError
         }
     }
 }

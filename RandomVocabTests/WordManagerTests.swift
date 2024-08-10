@@ -68,7 +68,8 @@ final class WordManagerTests: XCTestCase {
     
     func test_WordManagerGetNextWordWithEmptyStringCollectionInTheFile() async {
         let sut: WordManager =
-        WordManager(wordReaderService: MockWordListReader(words: nil),
+        WordManager(databaseService: nil,
+                    wordReaderService: MockWordListReader(words: nil),
                     randomWordPicker: MockRandomWordPicker(),
                     wordMeaningFetchingService: getMockDictionaryService())
         
@@ -78,7 +79,8 @@ final class WordManagerTests: XCTestCase {
     
     func test_WordManagerGetNextWordWithZeroStringCollection() async {
         let sut: WordManager =
-        WordManager(wordReaderService: MockWordListReader(words: []),
+        WordManager(databaseService: nil,
+                    wordReaderService: MockWordListReader(words: []),
                     randomWordPicker: MockRandomWordPicker(),
                     wordMeaningFetchingService: getMockDictionaryService())
         
@@ -88,7 +90,8 @@ final class WordManagerTests: XCTestCase {
     
     func test_WordManagerGetNextWordNotAvailableWordInTheDictionary() async {
         let sut: WordManager =
-        WordManager(wordReaderService: MockWordListReader(words: ["bleed"]),
+        WordManager(databaseService: nil,
+                    wordReaderService: MockWordListReader(words: ["bleed"]),
                     randomWordPicker: MockRandomWordPicker(),
                     wordMeaningFetchingService: getMockDictionaryService())
         
@@ -150,7 +153,8 @@ final class WordManagerTests: XCTestCase {
     
     func test_WordManagerGetPrevWordNotAvailableWordInTheDictionary() async {
         let sut: WordManager =
-        WordManager(wordReaderService: MockWordListReader(words: ["bleed"]),
+        WordManager(databaseService: nil,
+                    wordReaderService: MockWordListReader(words: ["bleed"]),
                     randomWordPicker: MockRandomWordPicker(),
                     wordMeaningFetchingService: getMockDictionaryService())
         
@@ -207,6 +211,17 @@ final class WordManagerTests: XCTestCase {
         XCTAssertNotNil(favouriteWords, "Favourite words should not be nil")
         XCTAssertTrue(favouriteWords?.count == 2, "There are 3 fav words")
         
+    }
+    
+    func test_WordManagerWithSameElementsInTheSameDay() {
+        let sut1: WordManager = WordManager()
+        let list1 = sut1.selectedWordsForToday
+        let sut2: WordManager = WordManager()
+        let list2 = sut2.selectedWordsForToday
+        
+        let sortedList1 = list1.sorted()
+        let sortedList2 = list2.sorted()
+        XCTAssertEqual(sortedList1, sortedList2, "The lists should contain the same elements")
     }
     
 }

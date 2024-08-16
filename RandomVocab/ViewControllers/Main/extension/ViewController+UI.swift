@@ -11,6 +11,7 @@ extension ViewController {
     internal func initView() {
         self.addBG()
         self.addWordLabel()
+        self.addButtons()
     }
     
     private func addBG() {
@@ -38,6 +39,46 @@ extension ViewController {
         NSLayoutConstraint.activate([
             self.label.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             self.label.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.view.frame.height * 0.15),
+        ])
+    }
+    
+    private func addButtons() {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 15
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let prevButton = UIButton(type: .system)
+        prevButton.setTitle("< Prev", for: .normal)
+        prevButton.setTitleColor(.white, for: .normal)
+        prevButton.layer.borderWidth = 1
+        prevButton.layer.borderColor = UIColor.white.cgColor
+        prevButton.layer.cornerRadius = 7
+        prevButton.translatesAutoresizingMaskIntoConstraints = false
+        prevButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        prevButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        prevButton.addTarget(self, action: #selector(prevButtonPressed), for: .touchUpInside)
+        
+        let nextButton = UIButton(type: .system)
+        nextButton.setTitle("Next >", for: .normal)
+        nextButton.setTitleColor(.white, for: .normal)
+        nextButton.layer.borderWidth = 1
+        nextButton.layer.borderColor = UIColor.white.cgColor
+        nextButton.layer.cornerRadius = 7
+        nextButton.translatesAutoresizingMaskIntoConstraints = false
+        nextButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        nextButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        nextButton.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
+
+        stackView.addArrangedSubview(prevButton)
+        stackView.addArrangedSubview(nextButton)
+
+        self.view.addSubview(stackView)
+
+        NSLayoutConstraint.activate([
+            stackView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            stackView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
+            stackView.heightAnchor.constraint(equalToConstant: 44) // This constraint ensures the stack view height matches the buttons
         ])
     }
 }

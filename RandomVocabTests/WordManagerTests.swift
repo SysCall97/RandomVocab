@@ -249,10 +249,12 @@ final class WordManagerTests: XCTestCase {
         WordManager(wordReaderService: MockWordListReader(words: words),
                     randomWordPicker: MockRandomWordPicker(),
                     wordMeaningFetchingService: getMockDictionaryService())
-        var word = await sut.getNextWord()
-        sut.markedAsFavourite(word!)
-        word = await sut.getNextWord()
-        sut.markedAsFavourite(word!)
+        if let word = await sut.getNextWord() {
+            sut.markedAsFavourite(word)
+        }
+        if let word = await sut.getNextWord() {
+            sut.markedAsFavourite(word)
+        }
         
         let favouriteWords = sut.getFavouriteWords()
         XCTAssertNotNil(favouriteWords, "Favourite words should not be nil")

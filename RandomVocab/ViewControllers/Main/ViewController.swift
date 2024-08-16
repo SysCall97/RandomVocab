@@ -27,7 +27,7 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         self.initView()
-        self.nextButtonPressed()
+        self.renderNextWord()
     }
 
 
@@ -37,8 +37,20 @@ class ViewController: UIViewController {
 extension ViewController {
     @objc
     internal func prevButtonPressed() {
+        self.renderPrevWord()
+    }
+    
+    @objc
+    internal func nextButtonPressed() {
+        self.renderNextWord()
+    }
+}
+
+//MARK: private functions
+extension ViewController {
+    private func renderNextWord() {
         Task {
-            guard let model: WordModel = await wordManager.getPrevWord() else {
+            guard let model: WordModel = await wordManager.getNextWord() else {
                 return
             }
             DispatchQueue.main.async {
@@ -47,10 +59,9 @@ extension ViewController {
         }
     }
     
-    @objc
-    internal func nextButtonPressed() {
+    private func renderPrevWord() {
         Task {
-            guard let model: WordModel = await wordManager.getNextWord() else {
+            guard let model: WordModel = await wordManager.getPrevWord() else {
                 return
             }
             DispatchQueue.main.async {

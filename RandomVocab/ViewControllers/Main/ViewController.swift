@@ -54,14 +54,7 @@ extension ViewController {
             guard let model: WordModel = await wordManager.getNextWord() else {
                 return
             }
-            DispatchQueue.main.async {
-                self.label.text = model.word
-                if let phonetics = model.phonetics {
-                    self.phoneticsLabel.text = phonetics.text
-                } else {
-                    self.phoneticsLabel.text = ""
-                }
-            }
+            self.renderViews(with: model)
         }
     }
     
@@ -70,13 +63,17 @@ extension ViewController {
             guard let model: WordModel = await wordManager.getPrevWord() else {
                 return
             }
-            DispatchQueue.main.async {
-                self.label.text = model.word
-                if let phonetics = model.phonetics {
-                    self.phoneticsLabel.text = phonetics.text
-                } else {
-                    self.phoneticsLabel.text = ""
-                }
+            self.renderViews(with: model)
+        }
+    }
+    
+    private func renderViews(with model: WordModel) {
+        DispatchQueue.main.async {
+            self.label.text = model.word
+            if let phonetics = model.phonetics {
+                self.phoneticsLabel.text = phonetics.text
+            } else {
+                self.phoneticsLabel.text = ""
             }
         }
     }

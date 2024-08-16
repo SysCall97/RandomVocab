@@ -37,6 +37,7 @@ final class WordManagerTests: XCTestCase {
         var mockResponses: [String: [APIResponseDataModel]] = [:]
         
         func getMeaning(for word: String) async throws -> [APIResponseDataModel] {
+            print("MASHRY:: getMeaning: test")
             try! await Task.sleep(nanoseconds: 1 * 1_000_000_000)
             
             if let response = mockResponses[word] {
@@ -45,6 +46,46 @@ final class WordManagerTests: XCTestCase {
                 throw NSError(domain: "MockErrorDomain", code: 404, userInfo: [NSLocalizedDescriptionKey: "Word not found"])
             }
         }
+    }
+    
+    class MockDatabaseService: AnyDatabaseService {
+        private let dictionary: MockDictionaryNetworkService
+        init(dictionary: MockDictionaryNetworkService) {
+            self.dictionary = dictionary
+        }
+        func save(word: RandomVocab.WordModel) {
+            //
+        }
+        
+        func fetchWords() throws -> [RandomVocab.WordModel]? {
+            var res = [RandomVocab.WordModel]()
+            dictionary.mockResponses.values.forEach { apiResponse in
+                let m = RandomVocab.WordModel(from: apiResponse)
+                res.append(m)
+            }
+            
+            return res
+        }
+        
+        func delete(word: RandomVocab.WordModel) throws {
+            //
+        }
+        
+        func isExists(word: RandomVocab.WordModel) throws -> Bool {
+            return true
+        }
+        
+        func save(selectedWords: RandomVocab.SelectedWords) {
+            //
+        }
+        
+        func fetchSelectedWords(with id: String) throws -> RandomVocab.SelectedWords? {
+            var res = RandomVocab.SelectedWords(words: ["blood", "programming", "money", "study"])
+            
+            return res
+        }
+        
+        
     }
     
     private func getMockDictionaryService() -> MockDictionaryNetworkService {
@@ -101,7 +142,8 @@ final class WordManagerTests: XCTestCase {
     
     func test_WordManagerGetNextWordAvailableWordInTheDictionary() async {
         let sut: WordManager =
-        WordManager(wordReaderService: MockWordListReader(words: ["blood"]),
+        WordManager(databaseService: MockDatabaseService(dictionary: getMockDictionaryService()),
+                    wordReaderService: MockWordListReader(words: ["blood"]),
                     randomWordPicker: MockRandomWordPicker(),
                     wordMeaningFetchingService: getMockDictionaryService())
         
@@ -111,7 +153,8 @@ final class WordManagerTests: XCTestCase {
     
     func test_WordManagerGetNextWordForMultipleTimes() async {
         let sut: WordManager =
-        WordManager(wordReaderService: MockWordListReader(words: words),
+        WordManager(databaseService: MockDatabaseService(dictionary: getMockDictionaryService()),
+                    wordReaderService: MockWordListReader(words: words),
                     randomWordPicker: MockRandomWordPicker(),
                     wordMeaningFetchingService: getMockDictionaryService())
         
@@ -133,7 +176,8 @@ final class WordManagerTests: XCTestCase {
     
     func test_WordManagerGetPrevWordWithEmptyStringCollectionInTheFile() async {
         let sut: WordManager =
-        WordManager(wordReaderService: MockWordListReader(words: nil),
+        WordManager(databaseService: MockDatabaseService(dictionary: getMockDictionaryService()),
+                    wordReaderService: MockWordListReader(words: nil),
                     randomWordPicker: MockRandomWordPicker(),
                     wordMeaningFetchingService: getMockDictionaryService())
         
@@ -143,7 +187,8 @@ final class WordManagerTests: XCTestCase {
     
     func test_WordManagerGetPrevWordWithZeroStringCollection() async {
         let sut: WordManager =
-        WordManager(wordReaderService: MockWordListReader(words: []),
+        WordManager(databaseService: MockDatabaseService(dictionary: getMockDictionaryService()),
+                    wordReaderService: MockWordListReader(words: []),
                     randomWordPicker: MockRandomWordPicker(),
                     wordMeaningFetchingService: getMockDictionaryService())
         
@@ -164,7 +209,8 @@ final class WordManagerTests: XCTestCase {
     
     func test_WordManagerGetPrevWordCallWithNoNextWordCallAtFirst() async {
         let sut: WordManager =
-        WordManager(wordReaderService: MockWordListReader(words: ["blood"]),
+        WordManager(databaseService: MockDatabaseService(dictionary: getMockDictionaryService()),
+                    wordReaderService: MockWordListReader(words: ["blood"]),
                     randomWordPicker: MockRandomWordPicker(),
                     wordMeaningFetchingService: getMockDictionaryService())
         
@@ -174,7 +220,8 @@ final class WordManagerTests: XCTestCase {
     
     func test_WordManagerGetWordForWhomNetwordCallDoneAlready() async {
         let sut: WordManager =
-        WordManager(wordReaderService: MockWordListReader(words: words),
+        WordManager(databaseService: MockDatabaseService(dictionary: getMockDictionaryService()),
+                    wordReaderService: MockWordListReader(words: words),
                     randomWordPicker: MockRandomWordPicker(),
                     wordMeaningFetchingService: getMockDictionaryService())
         

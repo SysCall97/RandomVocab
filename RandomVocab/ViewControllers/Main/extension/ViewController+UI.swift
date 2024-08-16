@@ -11,6 +11,7 @@ extension ViewController {
     internal func initView() {
         self.addBG()
         self.addWordLabel()
+        self.addPhoneticsLabel()
         self.addButtons()
     }
     
@@ -31,7 +32,7 @@ extension ViewController {
         self.label = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 20))
         self.label.text = "Hello everyone"
         self.label.numberOfLines = 1
-        self.label.font = UIFont.systemFont(ofSize: 40, weight: UIFont.Weight(510.0))
+        self.label.font = UIFont.systemFont(ofSize: 35, weight: UIFont.Weight(510.0))
         self.label.textColor = .white
         self.label.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(label)
@@ -39,6 +40,21 @@ extension ViewController {
         NSLayoutConstraint.activate([
             self.label.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             self.label.topAnchor.constraint(equalTo: self.view.topAnchor, constant: self.view.frame.height * 0.15),
+        ])
+    }
+    
+    private func addPhoneticsLabel() {
+        self.phoneticsLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 20))
+        self.phoneticsLabel.text = "Hello everyone"
+        self.phoneticsLabel.numberOfLines = 1
+        self.phoneticsLabel.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.light)
+        self.phoneticsLabel.textColor = .white
+        self.phoneticsLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(phoneticsLabel)
+        
+        NSLayoutConstraint.activate([
+            self.phoneticsLabel.topAnchor.constraint(equalTo: self.label.bottomAnchor, constant: 0),
+            self.phoneticsLabel.leadingAnchor.constraint(equalTo: self.label.leadingAnchor, constant: 0)
         ])
     }
     

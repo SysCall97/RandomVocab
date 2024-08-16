@@ -10,6 +10,7 @@ import UIKit
 class ViewController: UIViewController {
     
     internal var label: UILabel!
+    internal var phoneticsLabel: UILabel!
     var wordManager: AnyWordManager
     
     init(wordManager: AnyWordManager = WordManager()) {
@@ -55,6 +56,11 @@ extension ViewController {
             }
             DispatchQueue.main.async {
                 self.label.text = model.word
+                if let phonetics = model.phonetics {
+                    self.phoneticsLabel.text = phonetics.text
+                } else {
+                    self.phoneticsLabel.text = ""
+                }
             }
         }
     }
@@ -66,6 +72,11 @@ extension ViewController {
             }
             DispatchQueue.main.async {
                 self.label.text = model.word
+                if let phonetics = model.phonetics {
+                    self.phoneticsLabel.text = phonetics.text
+                } else {
+                    self.phoneticsLabel.text = ""
+                }
             }
         }
     }

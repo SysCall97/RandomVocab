@@ -11,6 +11,7 @@ extension ViewController {
     internal func initView() {
         self.addBG()
         self.addWordLabel()
+        self.addMicButton()
         self.addPhoneticsLabel()
         self.addButtons()
     }
@@ -29,7 +30,7 @@ extension ViewController {
     }
     
     private func addWordLabel() {
-        self.label = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 20))
+        self.label = UILabel()
         self.label.text = "Hello everyone"
         self.label.numberOfLines = 1
         self.label.font = UIFont.systemFont(ofSize: 35, weight: UIFont.Weight(510.0))
@@ -43,8 +44,25 @@ extension ViewController {
         ])
     }
     
+    private func addMicButton() {
+        speakerButton = UIButton()
+        speakerButton.backgroundColor = .clear
+        speakerButton.setImage(UIImage(systemName: "speaker.2.fill"), for: .normal)
+        speakerButton.addTarget(self, action: #selector(sparkerButtonPressed), for: .touchUpInside)
+        speakerButton.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(speakerButton)
+        
+        NSLayoutConstraint.activate([
+            speakerButton.centerYAnchor.constraint(equalTo: self.label.centerYAnchor),
+            speakerButton.leadingAnchor.constraint(equalTo: self.label.trailingAnchor, constant: 5),
+            speakerButton.heightAnchor.constraint(equalToConstant: 30),
+            speakerButton.widthAnchor.constraint(equalToConstant: 30)
+        ])
+        
+    }
+    
     private func addPhoneticsLabel() {
-        self.phoneticsLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 20))
+        self.phoneticsLabel = UILabel()
         self.phoneticsLabel.text = "Hello everyone"
         self.phoneticsLabel.numberOfLines = 1
         self.phoneticsLabel.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.light)

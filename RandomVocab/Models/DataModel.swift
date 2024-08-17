@@ -13,8 +13,8 @@ struct APIResponseDataModel: Codable {
     let meanings: [Meaning]
     
     struct Phonetic: Codable {
-        let text: String
-        let audio: String
+        let text: String?
+        let audio: String?
     }
     
     struct Meaning: Codable {

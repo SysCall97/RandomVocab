@@ -12,13 +12,31 @@ import SwiftData
 class WordModel {
     var id: String
     let word: String
-    let phonetics: APIResponseDataModel.Phonetic?
+    var phonetics: APIResponseDataModel.Phonetic?
     var meanings: [APIResponseDataModel.Meaning]
     
     init(from response: [APIResponseDataModel]) {
         self.id = response.first!.word
         self.word = response.first?.word ?? ""
-        self.phonetics = (response.first?.phonetics.first) ?? nil
+        
+        var text: String? = nil
+        var audio: String? = nil
+        response.forEach { res in
+            res.phonetics.forEach { phonetic in
+                if let pText = phonetic.text {
+                    if !pText.isEmpty {
+                        text = pText
+                    }
+                }
+                
+                if let pAudio = phonetic.audio {
+                    if !pAudio.isEmpty {
+                        audio = pAudio
+                    }
+                }
+            }
+        }
+        self.phonetics = APIResponseDataModel.Phonetic(text: text, audio: audio)
         self.meanings = []
         response.forEach { [self] res in
             meanings.append(contentsOf: res.meanings)

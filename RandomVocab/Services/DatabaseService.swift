@@ -98,7 +98,7 @@ class DatabaseService: AnyDatabaseService {
 extension DatabaseService {
     func save(selectedWords: SelectedWords) {
         do {
-            if let existingWords = try fetchSelectedWords(with: selectedWords.id) {
+            if let _ = try fetchSelectedWords(with: selectedWords.id) {
                 print("Word with ID \(selectedWords.id) already exists")
                 return
             }

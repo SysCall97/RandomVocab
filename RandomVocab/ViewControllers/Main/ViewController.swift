@@ -6,11 +6,15 @@
 //
 
 import UIKit
+import AVFoundation
 
 class ViewController: UIViewController {
     
     internal var label: UILabel!
     internal var phoneticsLabel: UILabel!
+    internal var speakerButton: UIButton!
+    private var audioPlayer: AVPlayer?
+    private var audioLink: String?
     var wordManager: AnyWordManager
     
     init(wordManager: AnyWordManager = WordManager()) {
@@ -45,6 +49,15 @@ extension ViewController {
     internal func nextButtonPressed() {
         self.renderNextWord()
     }
+    @objc
+    internal func sparkerButtonPressed() {
+        if let audioLink = self.audioLink {
+            if let url = URL(string: audioLink) {
+                audioPlayer = AVPlayer(url: url)
+                audioPlayer?.play()
+            }
+        }
+    }
 }
 
 //MARK: private functions
@@ -71,7 +84,17 @@ extension ViewController {
         DispatchQueue.main.async {
             self.label.text = model.word
             if let phonetics = model.phonetics {
-                self.phoneticsLabel.text = phonetics.text
+                if let text = phonetics.text {
+                    self.phoneticsLabel.text = text
+                } else {
+                    self.phoneticsLabel.text = ""
+                }
+                self.audioLink = phonetics.audio
+                if let _ = phonetics.audio {
+                    self.speakerButton.isHidden = false
+                } else {
+                    self.speakerButton.isHidden = true
+                }
             } else {
                 self.phoneticsLabel.text = ""
             }

@@ -20,7 +20,7 @@ protocol AnyWordManager {
     var randomWordPicker: AnyRandomWordPicker { get set }
     func getNextWord() async -> WordModel?
     func getPrevWord() async -> WordModel?
-    func markedAsFavourite(_ wordMode: WordModel)
+    func markedAsFavourite(_ wordModel: WordModel)
     func getFavouriteWords() -> [WordModel]?
     
 }
@@ -101,8 +101,8 @@ class WordManager: AnyWordManager {
         return await createViewModel(for: word)
     }
     
-    func markedAsFavourite(_ wordMode: WordModel) {
-        databaseService?.save(word: wordMode)
+    func markedAsFavourite(_ wordModel: WordModel) {
+        databaseService?.save(word: wordModel)
     }
     
     func getFavouriteWords() -> [WordModel]? {

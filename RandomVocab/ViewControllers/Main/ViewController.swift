@@ -67,8 +67,7 @@ extension ViewController {
     @objc
     internal func markCurrentWordAsFavourite() {
         if let currentViewModel {
-            self.currentViewModel!.isMarkedAsFavourite = !self.currentViewModel!.isMarkedAsFavourite
-//            wordManager.markedAsFavourite(currentViewModel)
+            wordManager.markedAsFavourite(currentViewModel)
         }
     }
 }

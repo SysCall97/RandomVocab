@@ -107,9 +107,11 @@ class WordManager: AnyWordManager {
         if favouriteWords == nil {
             favouriteWords = [wordViewModel]
             databaseService?.save(word: wordViewModel.wordModel)
+            wordViewModel.isMarkedAsFavourite = true
         } else if !(favouriteWords?.contains(where: { $0.wordModel.id == wordViewModel.wordModel.id }) ?? false) {
             favouriteWords?.append(wordViewModel)
             databaseService?.save(word: wordViewModel.wordModel)
+            wordViewModel.isMarkedAsFavourite = true
         }
         
     }
@@ -124,7 +126,8 @@ class WordManager: AnyWordManager {
             words?.forEach({ model in
                 wordViewModels.append(WordViewModel(with: model, isFavourite: true))
             })
-            return wordViewModels
+            self.favouriteWords = wordViewModels
+            return favouriteWords
             
         } catch {
             return nil
@@ -145,8 +148,9 @@ class WordManager: AnyWordManager {
         do {
             let response = try await wordMeaningFetchingService.getMeaning(for: word)
             let model = WordModel(from: response)
+            let isFavourite = self.isFavourite(model: model)
             
-            self.dictionary[word] = WordViewModel(with: model, isFavourite: self.isFavourite(model: model))
+            self.dictionary[word] = WordViewModel(with: model, isFavourite: isFavourite)
             return self.dictionary[word]
         } catch {
             return nil

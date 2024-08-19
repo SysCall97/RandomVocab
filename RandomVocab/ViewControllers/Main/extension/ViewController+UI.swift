@@ -45,20 +45,18 @@ extension ViewController {
     }
     
     private func addMarkAsFavouriteButton() {
-        speakerButton = UIButton()
-        speakerButton.backgroundColor = .clear
-        let starImage = UIImage(systemName: "star")?.withRenderingMode(.alwaysTemplate)
-        speakerButton.setImage(starImage, for: .normal)
-        speakerButton.tintColor = .yellow
-        speakerButton.addTarget(self, action: #selector(markCurrentWordAsFavourite), for: .touchUpInside)
-        speakerButton.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(speakerButton)
+        markAsFavouriteButton = UIButton()
+        markAsFavouriteButton.backgroundColor = .clear
+        markAsFavouriteButton.tintColor = .yellow
+        markAsFavouriteButton.addTarget(self, action: #selector(markCurrentWordAsFavourite), for: .touchUpInside)
+        markAsFavouriteButton.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(markAsFavouriteButton)
         
         NSLayoutConstraint.activate([
-            speakerButton.centerYAnchor.constraint(equalTo: self.label.centerYAnchor),
-            speakerButton.leadingAnchor.constraint(equalTo: self.label.trailingAnchor, constant: 5),
-            speakerButton.heightAnchor.constraint(equalToConstant: 30),
-            speakerButton.widthAnchor.constraint(equalToConstant: 30)
+            markAsFavouriteButton.centerYAnchor.constraint(equalTo: self.label.centerYAnchor),
+            markAsFavouriteButton.leadingAnchor.constraint(equalTo: self.label.trailingAnchor, constant: 5),
+            markAsFavouriteButton.heightAnchor.constraint(equalToConstant: 30),
+            markAsFavouriteButton.widthAnchor.constraint(equalToConstant: 30)
         ])
         
     }

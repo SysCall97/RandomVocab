@@ -7,15 +7,18 @@
 
 import UIKit
 import AVFoundation
+import Combine
 
 class ViewController: UIViewController {
     
     internal var label: UILabel!
     internal var phoneticsLabel: UILabel!
     internal var speakerButton: UIButton!
+    internal var markAsFavouriteButton: UIButton!
     private var audioPlayer: AVPlayer?
     private var audioLink: String?
-    private var currentModel: WordModel?
+    private var currentViewModel: WordViewModel?
+    private var cancellable: AnyCancellable?
     var wordManager: AnyWordManager
     
     init(wordManager: AnyWordManager = WordManager()) {
@@ -33,7 +36,7 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         self.initView()
-//        self.renderNextWord()
+        self.renderNextWord()
     }
 
 
@@ -63,8 +66,9 @@ extension ViewController {
     
     @objc
     internal func markCurrentWordAsFavourite() {
-        if let currentModel {
-            wordManager.markedAsFavourite(currentModel)
+        if let currentViewModel {
+            self.currentViewModel!.isMarkedAsFavourite = !self.currentViewModel!.isMarkedAsFavourite
+//            wordManager.markedAsFavourite(currentViewModel)
         }
     }
 }
@@ -90,9 +94,23 @@ extension ViewController {
     }
     
     private func renderViews(with model: WordModel) {
-        self.currentModel = model
-        DispatchQueue.main.async {
+        self.currentViewModel = WordViewModel(with: model, isFavourite: Bool.random())
+        cancellable = currentViewModel?.$isMarkedAsFavourite.sink { [weak self] newValue in
+            if let weakSelf = self {
+                weakSelf.markAsFavouriteUpdated(to: newValue)
+            }
+        }
+        
+        DispatchQueue.main.async { [self] in
             self.label.text = model.word
+            if self.currentViewModel!.isMarkedAsFavourite {
+                let starImage = UIImage(systemName: "star.fill")?.withRenderingMode(.alwaysTemplate)
+                markAsFavouriteButton.setImage(starImage, for: .normal)
+            } else {
+                let starImage = UIImage(systemName: "star")?.withRenderingMode(.alwaysTemplate)
+                markAsFavouriteButton.setImage(starImage, for: .normal)
+            }
+
             if let phonetics = model.phonetics {
                 if let text = phonetics.text {
                     self.phoneticsLabel.text = text
@@ -100,13 +118,25 @@ extension ViewController {
                     self.phoneticsLabel.text = ""
                 }
                 self.audioLink = phonetics.audio
-                if let _ = phonetics.audio {
-                    self.speakerButton.isHidden = false
-                } else {
-                    self.speakerButton.isHidden = true
-                }
+//                if let _ = phonetics.audio {
+//                    self.speakerButton.isHidden = false
+//                } else {
+//                    self.speakerButton.isHidden = true
+//                }
             } else {
                 self.phoneticsLabel.text = ""
+            }
+        }
+    }
+    
+    private func markAsFavouriteUpdated(to newValue: Bool) {
+        DispatchQueue.main.async { [self] in
+            if newValue {
+                let starImage = UIImage(systemName: "star.fill")?.withRenderingMode(.alwaysTemplate)
+                markAsFavouriteButton.setImage(starImage, for: .normal)
+            } else {
+                let starImage = UIImage(systemName: "star")?.withRenderingMode(.alwaysTemplate)
+                markAsFavouriteButton.setImage(starImage, for: .normal)
             }
         }
     }

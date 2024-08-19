@@ -6,10 +6,11 @@
 //
 
 import Foundation
+import Combine
 
-class WordViewModel {
+class WordViewModel: ObservableObject {
     let wordModel: WordModel
-    private(set) var isMarkedAsFavourite: Bool
+    @Published var isMarkedAsFavourite: Bool
     private(set) var isPhoneticsHasAudibleFile: Bool = false
     
     init(with model: WordModel, isFavourite: Bool) {

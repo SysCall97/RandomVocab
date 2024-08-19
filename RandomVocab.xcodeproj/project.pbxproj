@@ -10,6 +10,7 @@
 		043E39622C58A346005383E2 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043E39612C58A346005383E2 /* Errors.swift */; };
 		043E39642C58A39A005383E2 /* CommonConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043E39632C58A39A005383E2 /* CommonConstants.swift */; };
 		043E39662C58A7FE005383E2 /* WordListReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043E39652C58A7FE005383E2 /* WordListReaderTests.swift */; };
+		045484F92C72CF5100A16D63 /* WordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045484F82C72CF5100A16D63 /* WordViewModel.swift */; };
 		046629572C6EF71100D6D8DF /* ViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046629562C6EF71100D6D8DF /* ViewController+UI.swift */; };
 		046629592C6EFB9D00D6D8DF /* bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 046629582C6EFB9D00D6D8DF /* bg.jpg */; };
 		049237B12C55C11B004829E5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049237B02C55C11B004829E5 /* AppDelegate.swift */; };
@@ -57,6 +58,7 @@
 		043E39612C58A346005383E2 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		043E39632C58A39A005383E2 /* CommonConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonConstants.swift; sourceTree = "<group>"; };
 		043E39652C58A7FE005383E2 /* WordListReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordListReaderTests.swift; sourceTree = "<group>"; };
+		045484F82C72CF5100A16D63 /* WordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordViewModel.swift; sourceTree = "<group>"; };
 		046629562C6EF71100D6D8DF /* ViewController+UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+UI.swift"; sourceTree = "<group>"; };
 		046629582C6EFB9D00D6D8DF /* bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bg.jpg; sourceTree = "<group>"; };
 		049237AD2C55C11B004829E5 /* RandomVocab.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RandomVocab.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -249,6 +251,7 @@
 		04DF4A582C58F8E1008298E9 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				045484F82C72CF5100A16D63 /* WordViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -392,6 +395,7 @@
 				046629572C6EF71100D6D8DF /* ViewController+UI.swift in Sources */,
 				04EC69142C67B505001D02F1 /* extensions.swift in Sources */,
 				049237B12C55C11B004829E5 /* AppDelegate.swift in Sources */,
+				045484F92C72CF5100A16D63 /* WordViewModel.swift in Sources */,
 				043E39642C58A39A005383E2 /* CommonConstants.swift in Sources */,
 				04EC69122C67A194001D02F1 /* SelectedWords.swift in Sources */,
 				04DF4A552C58D911008298E9 /* WordManager.swift in Sources */,

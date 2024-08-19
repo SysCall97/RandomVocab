@@ -77,7 +77,7 @@ extension ViewController {
 extension ViewController {
     private func renderNextWord() {
         Task {
-            guard let model: WordModel = await wordManager.getNextWord() else {
+            guard let model: WordViewModel = await wordManager.getNextWord() else {
                 return
             }
             self.renderViews(with: model)
@@ -86,21 +86,21 @@ extension ViewController {
     
     private func renderPrevWord() {
         Task {
-            guard let model: WordModel = await wordManager.getPrevWord() else {
+            guard let model: WordViewModel = await wordManager.getPrevWord() else {
                 return
             }
             self.renderViews(with: model)
         }
     }
     
-    private func renderViews(with model: WordModel) {
-        self.currentViewModel = WordViewModel(with: model, isFavourite: Bool.random())
+    private func renderViews(with viewModel: WordViewModel) {
+        self.currentViewModel = viewModel
         cancellable = currentViewModel?.$isMarkedAsFavourite.sink { [weak self] newValue in
             if let weakSelf = self {
                 weakSelf.markAsFavouriteUpdated(to: newValue)
             }
         }
-        
+        let model = viewModel.wordModel
         DispatchQueue.main.async { [self] in
             self.label.text = model.word
             if self.currentViewModel!.isMarkedAsFavourite {

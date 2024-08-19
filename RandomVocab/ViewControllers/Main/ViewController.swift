@@ -15,6 +15,7 @@ class ViewController: UIViewController {
     internal var speakerButton: UIButton!
     private var audioPlayer: AVPlayer?
     private var audioLink: String?
+    private var currentModel: WordModel?
     var wordManager: AnyWordManager
     
     init(wordManager: AnyWordManager = WordManager()) {
@@ -32,7 +33,7 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         self.initView()
-        self.renderNextWord()
+//        self.renderNextWord()
     }
 
 
@@ -49,6 +50,7 @@ extension ViewController {
     internal func nextButtonPressed() {
         self.renderNextWord()
     }
+    
     @objc
     internal func sparkerButtonPressed() {
         if let audioLink = self.audioLink {
@@ -56,6 +58,13 @@ extension ViewController {
                 audioPlayer = AVPlayer(url: url)
                 audioPlayer?.play()
             }
+        }
+    }
+    
+    @objc
+    internal func markCurrentWordAsFavourite() {
+        if let currentModel {
+            wordManager.markedAsFavourite(currentModel)
         }
     }
 }
@@ -81,6 +90,7 @@ extension ViewController {
     }
     
     private func renderViews(with model: WordModel) {
+        self.currentModel = model
         DispatchQueue.main.async {
             self.label.text = model.word
             if let phonetics = model.phonetics {

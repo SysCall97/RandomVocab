@@ -11,7 +11,7 @@ extension ViewController {
     internal func initView() {
         self.addBG()
         self.addWordLabel()
-        self.addMicButton()
+        self.addMarkAsFavouriteButton()
         self.addPhoneticsLabel()
         self.addButtons()
     }
@@ -44,11 +44,13 @@ extension ViewController {
         ])
     }
     
-    private func addMicButton() {
+    private func addMarkAsFavouriteButton() {
         speakerButton = UIButton()
         speakerButton.backgroundColor = .clear
-        speakerButton.setImage(UIImage(systemName: "speaker.2.fill"), for: .normal)
-        speakerButton.addTarget(self, action: #selector(sparkerButtonPressed), for: .touchUpInside)
+        let starImage = UIImage(systemName: "star")?.withRenderingMode(.alwaysTemplate)
+        speakerButton.setImage(starImage, for: .normal)
+        speakerButton.tintColor = .yellow
+        speakerButton.addTarget(self, action: #selector(markCurrentWordAsFavourite), for: .touchUpInside)
         speakerButton.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(speakerButton)
         

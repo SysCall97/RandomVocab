@@ -160,18 +160,18 @@ final class WordManagerTests: XCTestCase {
         
         var res = await sut.getNextWord()
         XCTAssertNotNil(res, "Output should not be nil")
-        XCTAssertEqual(res!.word, words[0], "Name didn't matched")
+        XCTAssertEqual(res!.wordModel.word, words[0], "Name didn't matched")
         
         res = await sut.getNextWord()
         XCTAssertNotNil(res, "Output should be nil")
-        XCTAssertEqual(res!.word, words[1], "Name didn't matched")
+        XCTAssertEqual(res!.wordModel.word, words[1], "Name didn't matched")
         
         res = await sut.getNextWord()
         XCTAssertNil(res, "Output should be nil")
         
         res = await sut.getNextWord()
         XCTAssertNotNil(res, "Output should be nil")
-        XCTAssertEqual(res!.word, words[3], "Name didn't matched")
+        XCTAssertEqual(res!.wordModel.word, words[3], "Name didn't matched")
     }
     
     func test_WordManagerGetPrevWordWithEmptyStringCollectionInTheFile() async {

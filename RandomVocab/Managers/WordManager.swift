@@ -18,10 +18,10 @@ protocol AnyWordManager {
     var wordReaderService: AnyWordListReader { get set }
     var wordMeaningFetchingService: AnyDictionaryNetworkService { get set }
     var randomWordPicker: AnyRandomWordPicker { get set }
-    func getNextWord() async -> WordModel?
-    func getPrevWord() async -> WordModel?
-    func markedAsFavourite(_ wordModel: WordModel)
-    func getFavouriteWords() -> [WordModel]?
+    func getNextWord() async -> WordViewModel?
+    func getPrevWord() async -> WordViewModel?
+    func markedAsFavourite(_ wordViewModel: WordViewModel)
+    func getFavouriteWords() -> [WordViewModel]?
     
 }
 
@@ -30,7 +30,8 @@ class WordManager: AnyWordManager {
     var wordReaderService: AnyWordListReader
     var wordMeaningFetchingService: AnyDictionaryNetworkService
     var randomWordPicker: AnyRandomWordPicker
-    var dictionary = [String: WordModel]()
+    var dictionary = [String: WordViewModel]()
+    private var favouriteWords: [WordViewModel]? = nil
     var currentPosition: Int = -1
     var selectedWordsForToday = [String]()
     
@@ -69,7 +70,7 @@ class WordManager: AnyWordManager {
         }
     }
     
-    func getNextWord() async -> WordModel? {
+    func getNextWord() async -> WordViewModel? {
         currentPosition += 1
         if currentPosition >= selectedWordsForToday.count {
             currentPosition -= 1
@@ -85,7 +86,7 @@ class WordManager: AnyWordManager {
         return await createViewModel(for: word)
     }
     
-    func getPrevWord() async -> WordModel? {
+    func getPrevWord() async -> WordViewModel? {
         currentPosition -= 1
         if currentPosition < 0 {
             currentPosition += 1
@@ -101,24 +102,51 @@ class WordManager: AnyWordManager {
         return await createViewModel(for: word)
     }
     
-    func markedAsFavourite(_ wordModel: WordModel) {
-        databaseService?.save(word: wordModel)
+    func markedAsFavourite(_ wordViewModel: WordViewModel) {
+        let _ = getFavouriteWords()
+        if favouriteWords == nil {
+            favouriteWords = [wordViewModel]
+            databaseService?.save(word: wordViewModel.wordModel)
+        } else if !(favouriteWords?.contains(where: { $0.wordModel.id == wordViewModel.wordModel.id }) ?? false) {
+            favouriteWords?.append(wordViewModel)
+            databaseService?.save(word: wordViewModel.wordModel)
+        }
+        
     }
     
-    func getFavouriteWords() -> [WordModel]? {
+    func getFavouriteWords() -> [WordViewModel]? {
+        if let favouriteWords = self.favouriteWords {
+            return favouriteWords
+        }
         do {
             let words = try databaseService?.fetchWords()
-            return words
+            var wordViewModels = [WordViewModel]()
+            words?.forEach({ model in
+                wordViewModels.append(WordViewModel(with: model, isFavourite: true))
+            })
+            return wordViewModels
             
         } catch {
             return nil
         }
     }
     
-    private func createViewModel(for word: String) async -> WordModel? {
+    private func isFavourite(model: WordModel) -> Bool {
+        let _ = getFavouriteWords()
+        if favouriteWords == nil {
+            return false
+        } else if !(favouriteWords?.contains(where: { $0.wordModel.id == model.id }) ?? false) {
+            return false
+        }
+        return true
+    }
+    
+    private func createViewModel(for word: String) async -> WordViewModel? {
         do {
             let response = try await wordMeaningFetchingService.getMeaning(for: word)
-            self.dictionary[word] = WordModel(from: response)
+            let model = WordModel(from: response)
+            
+            self.dictionary[word] = WordViewModel(with: model, isFavourite: self.isFavourite(model: model))
             return self.dictionary[word]
         } catch {
             return nil

@@ -8,7 +8,11 @@
 import Foundation
 import Combine
 
-class WordViewModel: ObservableObject {
+class WordViewModel: ObservableObject, Equatable {
+    static func == (lhs: WordViewModel, rhs: WordViewModel) -> Bool {
+        lhs.wordModel.id == rhs.wordModel.id
+    }
+    
     let wordModel: WordModel
     @Published var isMarkedAsFavourite: Bool
     private(set) var isPhoneticsHasAudibleFile: Bool = false

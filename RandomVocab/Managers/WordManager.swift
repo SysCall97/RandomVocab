@@ -123,8 +123,8 @@ class WordManager: AnyWordManager {
         do {
             let words = try databaseService?.fetchWords()
             var wordViewModels = [WordViewModel]()
-            words?.forEach({ model in
-                wordViewModels.append(WordViewModel(with: model, isFavourite: true))
+            words?.enumerated().forEach({ (index, model) in
+                wordViewModels.append(WordViewModel(with: model, serialNo: index+1, isFavourite: true))
             })
             self.favouriteWords = wordViewModels
             return favouriteWords
@@ -150,7 +150,7 @@ class WordManager: AnyWordManager {
             let model = WordModel(from: response)
             let isFavourite = self.isFavourite(model: model)
             
-            self.dictionary[word] = WordViewModel(with: model, isFavourite: isFavourite)
+            self.dictionary[word] = WordViewModel(with: model, serialNo: currentPosition+1, isFavourite: isFavourite)
             return self.dictionary[word]
         } catch {
             return nil

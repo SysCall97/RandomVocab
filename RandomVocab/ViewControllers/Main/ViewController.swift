@@ -15,6 +15,8 @@ class ViewController: UIViewController {
     internal var phoneticsLabel: UILabel!
     internal var speakerButton: UIButton!
     internal var markAsFavouriteButton: UIButton!
+    internal var nextButton: UIButton!
+    internal var previousButton: UIButton!
     private var audioPlayer: AVPlayer?
     private var audioLink: String?
     private var currentViewModel: WordViewModel?
@@ -102,6 +104,7 @@ extension ViewController {
         let model = viewModel.wordModel
         DispatchQueue.main.async { [self] in
             self.label.text = model.word
+            
             if self.currentViewModel!.isMarkedAsFavourite {
                 let starImage = UIImage(systemName: "star.fill")?.withRenderingMode(.alwaysTemplate)
                 markAsFavouriteButton.setImage(starImage, for: .normal)
@@ -124,6 +127,20 @@ extension ViewController {
 //                }
             } else {
                 self.phoneticsLabel.text = ""
+            }
+            
+            self.nextButton.isUserInteractionEnabled = true
+            self.previousButton.isUserInteractionEnabled = true
+            self.nextButton.layer.opacity = 1
+            self.previousButton.layer.opacity = 1
+            
+            if viewModel.serialNo == CommonConstants.MAX_WORD_LIMIT {
+                self.nextButton.isUserInteractionEnabled = false
+                self.nextButton.layer.opacity = 0.6
+            }
+            if viewModel.serialNo == 1 {
+                self.previousButton.isUserInteractionEnabled = false
+                self.previousButton.layer.opacity = 0.6
             }
         }
     }

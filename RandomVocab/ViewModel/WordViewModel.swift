@@ -14,11 +14,13 @@ class WordViewModel: ObservableObject, Equatable {
     }
     
     let wordModel: WordModel
+    let serialNo: Int
     @Published var isMarkedAsFavourite: Bool
     private(set) var isPhoneticsHasAudibleFile: Bool = false
     
-    init(with model: WordModel, isFavourite: Bool) {
+    init(with model: WordModel, serialNo: Int, isFavourite: Bool) {
         self.wordModel = model
+        self.serialNo = serialNo
         self.isMarkedAsFavourite = isFavourite
         if let phonetics = model.phonetics {
             if let _ = phonetics.audio {

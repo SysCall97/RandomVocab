@@ -82,29 +82,29 @@ extension ViewController {
         stackView.spacing = 15
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
-        let prevButton = UIButton(type: .system)
-        prevButton.setTitle("< Prev", for: .normal)
-        prevButton.setTitleColor(.white, for: .normal)
-        prevButton.layer.borderWidth = 1
-        prevButton.layer.borderColor = UIColor.white.cgColor
-        prevButton.layer.cornerRadius = 7
-        prevButton.translatesAutoresizingMaskIntoConstraints = false
-        prevButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        prevButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
-        prevButton.addTarget(self, action: #selector(prevButtonPressed), for: .touchUpInside)
+        self.previousButton = UIButton(type: .system)
+        self.previousButton.setTitle("< Prev", for: .normal)
+        self.previousButton.setTitleColor(.white, for: .normal)
+        self.previousButton.layer.borderWidth = 1
+        self.previousButton.layer.borderColor = UIColor.white.cgColor
+        self.previousButton.layer.cornerRadius = 7
+        self.previousButton.translatesAutoresizingMaskIntoConstraints = false
+        self.previousButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        self.previousButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        self.previousButton.addTarget(self, action: #selector(prevButtonPressed), for: .touchUpInside)
         
-        let nextButton = UIButton(type: .system)
-        nextButton.setTitle("Next >", for: .normal)
-        nextButton.setTitleColor(.white, for: .normal)
-        nextButton.layer.borderWidth = 1
-        nextButton.layer.borderColor = UIColor.white.cgColor
-        nextButton.layer.cornerRadius = 7
-        nextButton.translatesAutoresizingMaskIntoConstraints = false
-        nextButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        nextButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
-        nextButton.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
+        self.nextButton = UIButton(type: .system)
+        self.nextButton.setTitle("Next >", for: .normal)
+        self.nextButton.setTitleColor(.white, for: .normal)
+        self.nextButton.layer.borderWidth = 1
+        self.nextButton.layer.borderColor = UIColor.white.cgColor
+        self.nextButton.layer.cornerRadius = 7
+        self.nextButton.translatesAutoresizingMaskIntoConstraints = false
+        self.nextButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        self.nextButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        self.nextButton.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
 
-        stackView.addArrangedSubview(prevButton)
+        stackView.addArrangedSubview(previousButton)
         stackView.addArrangedSubview(nextButton)
 
         self.view.addSubview(stackView)

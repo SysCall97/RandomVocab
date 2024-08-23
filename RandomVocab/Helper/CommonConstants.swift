@@ -21,5 +21,5 @@ class FileNameContainer {
 }
 
 class CommonConstants {
-    static let maxNumberOfWordsToPick = 5
+    static let MAX_WORD_LIMIT = 5
 }

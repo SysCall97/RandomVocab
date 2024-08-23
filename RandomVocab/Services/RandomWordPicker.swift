@@ -15,7 +15,7 @@ final class RandomWordPicker: AnyRandomWordPicker {
     
     func getWords(from words: [String]) -> [String] {
         let shuffledArray = words.shuffled()
-        let resultArray = Array(shuffledArray.prefix(5))
+        let resultArray = Array(shuffledArray.prefix(CommonConstants.MAX_WORD_LIMIT))
         return resultArray
     }
     

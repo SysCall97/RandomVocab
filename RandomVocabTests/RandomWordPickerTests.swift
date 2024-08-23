@@ -15,7 +15,7 @@ final class RandomWordPickerTests: XCTestCase {
     func test_RandomWordPickerWordsCount() {
         let sut: AnyRandomWordPicker = RandomWordPicker()
         let list = sut.getWords(from: wordList)
-        XCTAssertEqual(list.count, CommonConstants.maxNumberOfWordsToPick, "RandomWordPicker must return the list of size \(CommonConstants.maxNumberOfWordsToPick)")
+        XCTAssertEqual(list.count, CommonConstants.MAX_WORD_LIMIT, "RandomWordPicker must return the list of size \(CommonConstants.MAX_WORD_LIMIT)")
     }
     
     func test_RandomWordPickerWithNoWordListAsParam() {

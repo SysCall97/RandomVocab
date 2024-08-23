@@ -13,6 +13,7 @@ extension ViewController {
         self.addWordLabel()
         self.addMarkAsFavouriteButton()
         self.addPhoneticsLabel()
+        self.addPhoneticsButton()
         self.addButtons()
     }
     
@@ -73,6 +74,22 @@ extension ViewController {
         NSLayoutConstraint.activate([
             self.phoneticsLabel.topAnchor.constraint(equalTo: self.label.bottomAnchor, constant: 0),
             self.phoneticsLabel.leadingAnchor.constraint(equalTo: self.label.leadingAnchor, constant: 0)
+        ])
+    }
+    
+    private func addPhoneticsButton() {
+        self.speakerButton = UIButton()
+        self.speakerButton.backgroundColor = .clear
+        self.speakerButton.setImage(UIImage(systemName: "speaker.2.fill"), for: .normal)
+        self.speakerButton.addTarget(self, action: #selector(sparkerButtonPressed), for: .touchUpInside)
+        self.speakerButton.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(speakerButton)
+        
+        NSLayoutConstraint.activate([
+            self.speakerButton.centerYAnchor.constraint(equalTo: self.phoneticsLabel.centerYAnchor),
+            self.speakerButton.leadingAnchor.constraint(equalTo: self.phoneticsLabel.trailingAnchor, constant: 5),
+            self.speakerButton.heightAnchor.constraint(equalToConstant: 30),
+            self.speakerButton.widthAnchor.constraint(equalToConstant: 30)
         ])
     }
     

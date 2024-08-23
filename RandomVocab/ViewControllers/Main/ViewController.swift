@@ -120,11 +120,11 @@ extension ViewController {
                     self.phoneticsLabel.text = ""
                 }
                 self.audioLink = phonetics.audio
-//                if let _ = phonetics.audio {
-//                    self.speakerButton.isHidden = false
-//                } else {
-//                    self.speakerButton.isHidden = true
-//                }
+                if let _ = phonetics.audio {
+                    self.speakerButton.isHidden = false
+                } else {
+                    self.speakerButton.isHidden = true
+                }
             } else {
                 self.phoneticsLabel.text = ""
             }

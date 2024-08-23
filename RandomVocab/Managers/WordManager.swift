@@ -20,7 +20,8 @@ protocol AnyWordManager {
     var randomWordPicker: AnyRandomWordPicker { get set }
     func getNextWord() async -> WordViewModel?
     func getPrevWord() async -> WordViewModel?
-    func markedAsFavourite(_ wordViewModel: WordViewModel)
+    func markAsFavourite(_ wordViewModel: WordViewModel)
+    func unmarkAsFavourite(_ wordViewModel: WordViewModel)
     func getFavouriteWords() -> [WordViewModel]?
     
 }
@@ -102,18 +103,25 @@ class WordManager: AnyWordManager {
         return await createViewModel(for: word)
     }
     
-    func markedAsFavourite(_ wordViewModel: WordViewModel) {
+    func markAsFavourite(_ wordViewModel: WordViewModel) {
         let _ = getFavouriteWords()
-        if favouriteWords == nil {
-            favouriteWords = [wordViewModel]
-            databaseService?.save(word: wordViewModel.wordModel)
-            wordViewModel.isMarkedAsFavourite = true
-        } else if !(favouriteWords?.contains(where: { $0.wordModel.id == wordViewModel.wordModel.id }) ?? false) {
+        if !(favouriteWords?.contains(where: { $0.wordModel.id == wordViewModel.wordModel.id }) ?? false) {
             favouriteWords?.append(wordViewModel)
             databaseService?.save(word: wordViewModel.wordModel)
             wordViewModel.isMarkedAsFavourite = true
         }
         
+    }
+    
+    func unmarkAsFavourite(_ wordViewModel: WordViewModel) {
+        var _ = getFavouriteWords()
+        if let index = favouriteWords?.firstIndex(where: { $0.wordModel.id == wordViewModel.wordModel.id }) {
+            do {
+                try databaseService?.delete(word: wordViewModel.wordModel)
+                favouriteWords?.remove(at: index)
+                wordViewModel.isMarkedAsFavourite = false
+            } catch {}
+        }
     }
     
     func getFavouriteWords() -> [WordViewModel]? {

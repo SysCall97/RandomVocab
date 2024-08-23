@@ -249,16 +249,53 @@ final class WordManagerTests: XCTestCase {
         WordManager(wordReaderService: MockWordListReader(words: words),
                     randomWordPicker: MockRandomWordPicker(),
                     wordMeaningFetchingService: getMockDictionaryService())
-        if let word = await sut.getNextWord() {
-            sut.markedAsFavourite(word)
-        }
-        if let word = await sut.getNextWord() {
-            sut.markedAsFavourite(word)
+        var prevCount = 0
+        if let prevFavs = sut.getFavouriteWords() {
+            prevCount = prevFavs.count
         }
         
-        let favouriteWords = sut.getFavouriteWords()
-        XCTAssertNotNil(favouriteWords, "Favourite words should not be nil")
-        XCTAssertTrue(favouriteWords?.count == 2, "There are 3 fav words")
+        if let word1 = await sut.getNextWord() {
+            sut.markAsFavourite(word1)
+            if let word2 = await sut.getNextWord() {
+                sut.markAsFavourite(word2)
+                
+                
+                let favouriteWords = sut.getFavouriteWords() ?? []
+                
+                XCTAssertNotNil(favouriteWords, "Favourite words should not be nil")
+                XCTAssertTrue(favouriteWords.count == prevCount + 2, "There should be 2 more fav words")
+            }
+        }
+        
+    }
+    
+    func test_WordManagerFavouriteWordsUnsetGet() async {
+        let sut: WordManager =
+        WordManager(wordReaderService: MockWordListReader(words: words),
+                    randomWordPicker: MockRandomWordPicker(),
+                    wordMeaningFetchingService: getMockDictionaryService())
+        
+        if let word1 = await sut.getNextWord() {
+            sut.markAsFavourite(word1)
+            
+            if let word2 = await sut.getNextWord() {
+                sut.markAsFavourite(word2)
+                
+                var prevCount = 0
+                if let prevFavs = sut.getFavouriteWords() {
+                    prevCount = prevFavs.count
+                }
+                
+                if let word = await sut.getNextWord() {
+                    sut.unmarkAsFavourite(word)
+                    
+                    let favouriteWords = sut.getFavouriteWords() ?? []
+                    
+                    XCTAssertNotNil(favouriteWords, "Favourite words should not be nil")
+                    XCTAssertTrue(favouriteWords.count == prevCount - 1, "There should be 1 less fav word")
+                }
+            }
+        }
         
     }
     

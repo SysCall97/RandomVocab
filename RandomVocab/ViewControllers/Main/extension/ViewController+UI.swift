@@ -49,7 +49,7 @@ extension ViewController {
         markAsFavouriteButton = UIButton()
         markAsFavouriteButton.backgroundColor = .clear
         markAsFavouriteButton.tintColor = .yellow
-        markAsFavouriteButton.addTarget(self, action: #selector(markCurrentWordAsFavourite), for: .touchUpInside)
+        markAsFavouriteButton.addTarget(self, action: #selector(toggleFavouriteStatus), for: .touchUpInside)
         markAsFavouriteButton.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(markAsFavouriteButton)
         

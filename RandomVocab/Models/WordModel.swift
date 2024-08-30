@@ -10,10 +10,11 @@ import SwiftData
 
 @Model
 class WordModel {
+    typealias Meanings = [APIResponseDataModel.Meaning]
     var id: String
     let word: String
     var phonetics: APIResponseDataModel.Phonetic?
-    var meanings: [APIResponseDataModel.Meaning]
+    var meanings: Meanings
     
     init(from response: [APIResponseDataModel]) {
         self.id = response.first!.word

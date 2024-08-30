@@ -147,6 +147,8 @@ extension ViewController {
                 self.previousButton.isUserInteractionEnabled = false
                 self.previousButton.layer.opacity = 0.6
             }
+            
+            self.render(meanings: model.meanings)
         }
     }
     
@@ -160,5 +162,44 @@ extension ViewController {
                 markAsFavouriteButton.setImage(starImage, for: .normal)
             }
         }
+    }
+    
+    private func render(meanings: WordModel.Meanings) {
+        meaningsContainerScrollView.subviews.forEach { $0.removeFromSuperview() }
+        meaningsContainerScrollView.contentSize = .zero
+        
+        var currentYPosition: CGFloat = 0.0
+        let labelWidth: CGFloat = self.view.frame.height
+        let labelSpacing: CGFloat = 10.0
+        
+        for meaning in meanings {
+            let label = UILabel()
+            let text = "(\(meaning.partOfSpeech)): \(meaning.definitions.first!.definition)"
+            label.text = text
+            label.textColor = .red
+            label.backgroundColor = .yellow
+            label.textAlignment = .left
+            label.numberOfLines = 0
+            let labelHeight = text.height(withConstrainedWidth: labelWidth, font: label.font)
+            
+            // Set the label's frame
+            label.frame = CGRect(x: 10, y: currentYPosition, width: labelWidth, height: labelHeight)
+            
+            // Add the label as a subview to the scroll view
+            meaningsContainerScrollView.addSubview(label)
+            
+            // Update the Y position for the next label
+            currentYPosition += labelHeight + labelSpacing
+        }
+        
+        meaningsContainerScrollView.contentSize = CGSize(width: meaningsContainerScrollView.frame.width, height: currentYPosition)
+    }
+}
+
+private extension String {
+    func height(withConstrainedWidth width: CGFloat, font: UIFont) -> CGFloat {
+        let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
+        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [.font: font], context: nil)
+        return ceil(boundingBox.height)
     }
 }

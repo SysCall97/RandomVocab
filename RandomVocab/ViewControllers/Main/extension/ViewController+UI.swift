@@ -140,8 +140,6 @@ extension ViewController {
     private func addMeaningView() {
         let scrollViewContainerView: UIView = UIView()
         self.meaningsContainerScrollView = UIScrollView()
-        scrollViewContainerView.backgroundColor = .brown
-        self.meaningsContainerScrollView.backgroundColor = .green
         scrollViewContainerView.addSubview(self.meaningsContainerScrollView)
         self.view.addSubview(scrollViewContainerView)
         

@@ -139,25 +139,25 @@ extension ViewController {
     
     private func addMeaningView() {
         let scrollViewContainerView: UIView = UIView()
-        let scrollView: UIScrollView = UIScrollView()
+        self.meaningsContainerScrollView = UIScrollView()
         scrollViewContainerView.backgroundColor = .brown
-        scrollView.backgroundColor = .green
-        scrollViewContainerView.addSubview(scrollView)
+        self.meaningsContainerScrollView.backgroundColor = .green
+        scrollViewContainerView.addSubview(self.meaningsContainerScrollView)
         self.view.addSubview(scrollViewContainerView)
         
         
         scrollViewContainerView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        self.meaningsContainerScrollView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             scrollViewContainerView.topAnchor.constraint(equalTo: self.phoneticsLabel.bottomAnchor, constant: 10.0),
             scrollViewContainerView.bottomAnchor.constraint(equalTo: self.previousButton.topAnchor, constant: -10.0),
             scrollViewContainerView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             scrollViewContainerView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
             
-            scrollView.topAnchor.constraint(equalTo: scrollViewContainerView.topAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: scrollViewContainerView.bottomAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: scrollViewContainerView.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: scrollViewContainerView.trailingAnchor)
+            self.meaningsContainerScrollView.topAnchor.constraint(equalTo: scrollViewContainerView.topAnchor),
+            self.meaningsContainerScrollView.bottomAnchor.constraint(equalTo: scrollViewContainerView.bottomAnchor),
+            self.meaningsContainerScrollView.leadingAnchor.constraint(equalTo: scrollViewContainerView.leadingAnchor),
+            self.meaningsContainerScrollView.trailingAnchor.constraint(equalTo: scrollViewContainerView.trailingAnchor)
         ])
     }
 }

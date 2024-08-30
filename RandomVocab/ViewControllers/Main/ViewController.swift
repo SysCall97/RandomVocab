@@ -17,6 +17,7 @@ class ViewController: UIViewController {
     internal var markAsFavouriteButton: UIButton!
     internal var nextButton: UIButton!
     internal var previousButton: UIButton!
+    internal var meaningsContainerScrollView: UIScrollView!
     private var audioPlayer: AVPlayer?
     private var audioLink: String?
     private var currentViewModel: WordViewModel?

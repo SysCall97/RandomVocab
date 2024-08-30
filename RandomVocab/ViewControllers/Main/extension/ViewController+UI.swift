@@ -15,8 +15,12 @@ extension ViewController {
         self.addPhoneticsLabel()
         self.addPhoneticsButton()
         self.addButtons()
+        self.addMeaningView()
     }
-    
+}
+
+//MARK: private functions
+extension ViewController {
     private func addBG() {
         guard let image = UIImage(named: "bg.jpg") else {
             fatalError("Background image not found")
@@ -130,6 +134,30 @@ extension ViewController {
             stackView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
             stackView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
             stackView.heightAnchor.constraint(equalToConstant: 44) // This constraint ensures the stack view height matches the buttons
+        ])
+    }
+    
+    private func addMeaningView() {
+        let scrollViewContainerView: UIView = UIView()
+        let scrollView: UIScrollView = UIScrollView()
+        scrollViewContainerView.backgroundColor = .brown
+        scrollView.backgroundColor = .green
+        scrollViewContainerView.addSubview(scrollView)
+        self.view.addSubview(scrollViewContainerView)
+        
+        
+        scrollViewContainerView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            scrollViewContainerView.topAnchor.constraint(equalTo: self.phoneticsLabel.bottomAnchor, constant: 10.0),
+            scrollViewContainerView.bottomAnchor.constraint(equalTo: self.previousButton.topAnchor, constant: -10.0),
+            scrollViewContainerView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            scrollViewContainerView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            
+            scrollView.topAnchor.constraint(equalTo: scrollViewContainerView.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: scrollViewContainerView.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: scrollViewContainerView.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: scrollViewContainerView.trailingAnchor)
         ])
     }
 }

@@ -9,6 +9,7 @@ import UIKit
 import AVFoundation
 import Combine
 
+@MainActor
 class ViewController: UIViewController {
     
     internal var label: UILabel!
@@ -41,8 +42,8 @@ class ViewController: UIViewController {
         self.initView()
         self.renderNextWord()
     }
-
-
+    
+    
 }
 
 //MARK: Button actions
@@ -82,20 +83,24 @@ extension ViewController {
 //MARK: private functions
 extension ViewController {
     private func renderNextWord() {
-        Task {
-            guard let model: WordViewModel = await wordManager.getNextWord() else {
-                return
+        Task.detached { [weak self] in
+            if let weakSelf = self {
+                guard let model: WordViewModel = await weakSelf.wordManager.getNextWord() else {
+                    return
+                }
+                await weakSelf.renderViews(with: model)
             }
-            self.renderViews(with: model)
         }
     }
     
     private func renderPrevWord() {
-        Task {
-            guard let model: WordViewModel = await wordManager.getPrevWord() else {
-                return
+        Task.detached { [weak self] in
+            if let weakSelf = self {
+                guard let model: WordViewModel = await weakSelf.wordManager.getPrevWord() else {
+                    return
+                }
+                await weakSelf.renderViews(with: model)
             }
-            self.renderViews(with: model)
         }
     }
     
@@ -107,60 +112,56 @@ extension ViewController {
             }
         }
         let model = viewModel.wordModel
-        DispatchQueue.main.async { [self] in
-            self.label.text = model.word
-            
-            if self.currentViewModel!.isMarkedAsFavourite {
-                let starImage = UIImage(systemName: "star.fill")?.withRenderingMode(.alwaysTemplate)
-                markAsFavouriteButton.setImage(starImage, for: .normal)
-            } else {
-                let starImage = UIImage(systemName: "star")?.withRenderingMode(.alwaysTemplate)
-                markAsFavouriteButton.setImage(starImage, for: .normal)
-            }
-
-            if let phonetics = model.phonetics {
-                if let text = phonetics.text {
-                    self.phoneticsLabel.text = text
-                } else {
-                    self.phoneticsLabel.text = ""
-                }
-                self.audioLink = phonetics.audio
-                if let _ = phonetics.audio {
-                    self.speakerButton.isHidden = false
-                } else {
-                    self.speakerButton.isHidden = true
-                }
+        self.label.text = model.word
+        
+        if self.currentViewModel!.isMarkedAsFavourite {
+            let starImage = UIImage(systemName: "star.fill")?.withRenderingMode(.alwaysTemplate)
+            markAsFavouriteButton.setImage(starImage, for: .normal)
+        } else {
+            let starImage = UIImage(systemName: "star")?.withRenderingMode(.alwaysTemplate)
+            markAsFavouriteButton.setImage(starImage, for: .normal)
+        }
+        
+        if let phonetics = model.phonetics {
+            if let text = phonetics.text {
+                self.phoneticsLabel.text = text
             } else {
                 self.phoneticsLabel.text = ""
             }
-            
-            self.nextButton.isUserInteractionEnabled = true
-            self.previousButton.isUserInteractionEnabled = true
-            self.nextButton.layer.opacity = 1
-            self.previousButton.layer.opacity = 1
-            
-            if viewModel.serialNo == CommonConstants.MAX_WORD_LIMIT {
-                self.nextButton.isUserInteractionEnabled = false
-                self.nextButton.layer.opacity = 0.6
+            self.audioLink = phonetics.audio
+            if let _ = phonetics.audio {
+                self.speakerButton.isHidden = false
+            } else {
+                self.speakerButton.isHidden = true
             }
-            if viewModel.serialNo == 1 {
-                self.previousButton.isUserInteractionEnabled = false
-                self.previousButton.layer.opacity = 0.6
-            }
-            
-            self.render(meanings: model.meanings)
+        } else {
+            self.phoneticsLabel.text = ""
         }
+        
+        self.nextButton.isUserInteractionEnabled = true
+        self.previousButton.isUserInteractionEnabled = true
+        self.nextButton.layer.opacity = 1
+        self.previousButton.layer.opacity = 1
+        
+        if viewModel.serialNo == CommonConstants.MAX_WORD_LIMIT {
+            self.nextButton.isUserInteractionEnabled = false
+            self.nextButton.layer.opacity = 0.6
+        }
+        if viewModel.serialNo == 1 {
+            self.previousButton.isUserInteractionEnabled = false
+            self.previousButton.layer.opacity = 0.6
+        }
+        
+        self.render(meanings: model.meanings)
     }
     
     private func markAsFavouriteUpdated(to newValue: Bool) {
-        DispatchQueue.main.async { [self] in
-            if newValue {
-                let starImage = UIImage(systemName: "star.fill")?.withRenderingMode(.alwaysTemplate)
-                markAsFavouriteButton.setImage(starImage, for: .normal)
-            } else {
-                let starImage = UIImage(systemName: "star")?.withRenderingMode(.alwaysTemplate)
-                markAsFavouriteButton.setImage(starImage, for: .normal)
-            }
+        if newValue {
+            let starImage = UIImage(systemName: "star.fill")?.withRenderingMode(.alwaysTemplate)
+            markAsFavouriteButton.setImage(starImage, for: .normal)
+        } else {
+            let starImage = UIImage(systemName: "star")?.withRenderingMode(.alwaysTemplate)
+            markAsFavouriteButton.setImage(starImage, for: .normal)
         }
     }
     
@@ -182,13 +183,8 @@ extension ViewController {
             label.numberOfLines = 0
             let labelHeight = text.height(withConstrainedWidth: labelWidth, font: label.font)
             
-            // Set the label's frame
             label.frame = CGRect(x: 10, y: currentYPosition, width: labelWidth, height: labelHeight)
-            
-            // Add the label as a subview to the scroll view
             meaningsContainerScrollView.addSubview(label)
-            
-            // Update the Y position for the next label
             currentYPosition += labelHeight + labelSpacing
         }
         

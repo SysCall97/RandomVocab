@@ -170,32 +170,52 @@ extension ViewController {
         meaningsContainerScrollView.contentSize = .zero
         
         var currentYPosition: CGFloat = 0.0
-        let labelWidth: CGFloat = self.view.frame.height
         let labelSpacing: CGFloat = 10.0
         
         for meaning in meanings {
-            let label = UILabel()
-            let text = "(\(meaning.partOfSpeech)): \(meaning.definitions.first!.definition)"
-            label.text = text
-            label.textColor = .red
-            label.backgroundColor = .yellow
-            label.textAlignment = .left
-            label.numberOfLines = 0
-            let labelHeight = text.height(withConstrainedWidth: labelWidth, font: label.font)
-            
-            label.frame = CGRect(x: 10, y: currentYPosition, width: labelWidth, height: labelHeight)
-            meaningsContainerScrollView.addSubview(label)
-            currentYPosition += labelHeight + labelSpacing
+            if let firstDefination = meaning.definitions.first {
+                let label = UILabel()
+                let text = "(\(meaning.partOfSpeech)): \(firstDefination.definition)"
+                
+                let font = UIFont.systemFont(ofSize: 16, weight: .medium)
+                let labelHeight = getLabelHeight(for: text, width: meaningsContainerScrollView.frame.width-20, font: font)
+                
+                label.frame = CGRect(x: 10, y: currentYPosition, width: meaningsContainerScrollView.frame.width, height: labelHeight)
+                
+                label.text = text
+                label.textColor = .white
+                label.backgroundColor = .clear
+                label.textAlignment = .left
+                label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+                label.numberOfLines = 0
+                
+                meaningsContainerScrollView.addSubview(label)
+                currentYPosition += labelHeight + labelSpacing
+            }
         }
         
         meaningsContainerScrollView.contentSize = CGSize(width: meaningsContainerScrollView.frame.width, height: currentYPosition)
     }
-}
+    
+    private func getLabelHeight(for text: String, width: CGFloat, font: UIFont) -> CGFloat {
+        let label = UILabel()
+        label.text = text
+        label.font = font
+        label.numberOfLines = 0
 
-private extension String {
-    func height(withConstrainedWidth width: CGFloat, font: UIFont) -> CGFloat {
-        let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
-        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [.font: font], context: nil)
-        return ceil(boundingBox.height)
+        let maxSize = CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)
+        
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: font
+        ]
+        
+        let textRect = text.boundingRect(
+            with: maxSize,
+            options: [.usesLineFragmentOrigin, .usesFontLeading],
+            attributes: attributes,
+            context: nil
+        )
+        
+        return ceil(textRect.height)
     }
 }

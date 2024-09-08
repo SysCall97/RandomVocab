@@ -23,6 +23,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let homeController = UIStoryboard(name: ViewController.storyboardName, bundle: nil).instantiateViewController(withIdentifier: ViewController.storyboardIdentifier) as! ViewController
         let wordManager: AnyWordManager = WordManager()
         
+        
+//        Task {
+//            let startTime = Date()
+//            await wordManager.initiateAllWordViewModels()
+//            let endTime = Date()
+//            let executionTime = endTime.timeIntervalSince(startTime)
+//            print("TIME:: \(executionTime)")
+//            wordManager.reset()
+//        }
+        
         homeController.wordManager = wordManager
         let navC = UINavigationController(rootViewController: homeController)
         navC.navigationBar.isHidden = true

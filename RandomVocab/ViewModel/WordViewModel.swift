@@ -14,7 +14,7 @@ class WordViewModel: ObservableObject, Equatable {
     }
     
     let wordModel: WordModel
-    let serialNo: Int
+    var serialNo: Int
     @Published var isMarkedAsFavourite: Bool
     private(set) var isPhoneticsHasAudibleFile: Bool = false
     

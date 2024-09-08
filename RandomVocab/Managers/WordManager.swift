@@ -18,8 +18,10 @@ protocol AnyWordManager {
     var wordReaderService: AnyWordListReader { get set }
     var wordMeaningFetchingService: AnyDictionaryNetworkService { get set }
     var randomWordPicker: AnyRandomWordPicker { get set }
+    func initiateAllWordViewModels() async
     func getNextWord() async -> WordViewModel?
     func getPrevWord() async -> WordViewModel?
+    func reset()
     func markAsFavourite(_ wordViewModel: WordViewModel)
     func unmarkAsFavourite(_ wordViewModel: WordViewModel)
     func getFavouriteWords() -> [WordViewModel]?
@@ -69,6 +71,27 @@ class WordManager: AnyWordManager {
             let selectedWords = SelectedWords(words: selectedWordsForToday)
             databaseService?.save(selectedWords: selectedWords)
         }
+    }
+    
+    func initiateAllWordViewModels() async {
+        await withTaskGroup(of: (Int, WordViewModel?).self) { group in
+            for (index, word) in selectedWordsForToday.enumerated() {
+                group.addTask { [self] in
+                    let viewModel = await createViewModel(for: word)
+                    return (index, viewModel)
+                }
+            }
+            
+            for await (index, wordViewModel) in group {
+                if let wordViewModel {
+                    wordViewModel.serialNo = index + 1
+                }
+            }
+        }
+    }
+    
+    func reset() {
+        self.currentPosition = -1
     }
     
     func getNextWord() async -> WordViewModel? {

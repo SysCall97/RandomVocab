@@ -71,12 +71,14 @@ extension ViewController {
     }
     
     @objc
-    internal func toggleFavouriteStatus() async {
-        if let currentViewModel {
-            if currentViewModel.isMarkedAsFavourite {
-                await wordManager.unmarkAsFavourite(currentViewModel)
-            } else {
-                await wordManager.markAsFavourite(currentViewModel)
+    internal func toggleFavouriteStatus() {
+        Task {
+            if let currentViewModel {
+                if currentViewModel.isMarkedAsFavourite {
+                    await wordManager.unmarkAsFavourite(currentViewModel)
+                } else {
+                    await wordManager.markAsFavourite(currentViewModel)
+                }
             }
         }
     }
@@ -110,7 +112,9 @@ extension ViewController {
         self.currentViewModel = viewModel
         cancellable = currentViewModel?.$isMarkedAsFavourite.sink { [weak self] newValue in
             if let weakSelf = self {
-                weakSelf.markAsFavouriteUpdated(to: newValue)
+                Task {
+                    await weakSelf.markAsFavouriteUpdated(to: newValue)
+                }
             }
         }
         let model = viewModel.wordModel
@@ -157,13 +161,14 @@ extension ViewController {
         self.render(meanings: model.meanings)
     }
     
-    private func markAsFavouriteUpdated(to newValue: Bool) {
+    private func markAsFavouriteUpdated(to newValue: Bool) async {
         var starImage = UIImage(systemName: "star")?.withRenderingMode(.alwaysTemplate)
         if newValue {
             starImage = UIImage(systemName: "star.fill")?.withRenderingMode(.alwaysTemplate)
         }
-        
-        markAsFavouriteButton.setImage(starImage, for: .normal)
+        await MainActor.run {
+            markAsFavouriteButton.setImage(starImage, for: .normal)
+        }
     }
     
     private func render(meanings: WordModel.Meanings) {

@@ -71,12 +71,12 @@ extension ViewController {
     }
     
     @objc
-    internal func toggleFavouriteStatus() {
+    internal func toggleFavouriteStatus() async {
         if let currentViewModel {
             if currentViewModel.isMarkedAsFavourite {
-                wordManager.unmarkAsFavourite(currentViewModel)
+                await wordManager.unmarkAsFavourite(currentViewModel)
             } else {
-                wordManager.markAsFavourite(currentViewModel)
+                await wordManager.markAsFavourite(currentViewModel)
             }
         }
     }
@@ -158,13 +158,12 @@ extension ViewController {
     }
     
     private func markAsFavouriteUpdated(to newValue: Bool) {
+        var starImage = UIImage(systemName: "star")?.withRenderingMode(.alwaysTemplate)
         if newValue {
-            let starImage = UIImage(systemName: "star.fill")?.withRenderingMode(.alwaysTemplate)
-            markAsFavouriteButton.setImage(starImage, for: .normal)
-        } else {
-            let starImage = UIImage(systemName: "star")?.withRenderingMode(.alwaysTemplate)
-            markAsFavouriteButton.setImage(starImage, for: .normal)
+            starImage = UIImage(systemName: "star.fill")?.withRenderingMode(.alwaysTemplate)
         }
+        
+        markAsFavouriteButton.setImage(starImage, for: .normal)
     }
     
     private func render(meanings: WordModel.Meanings) {

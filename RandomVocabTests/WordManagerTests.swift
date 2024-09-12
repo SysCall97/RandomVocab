@@ -109,7 +109,7 @@ final class WordManagerTests: XCTestCase {
     
     func test_WordManagerGetNextWordWithEmptyStringCollectionInTheFile() async {
         let sut: WordManager =
-        WordManager(databaseService: nil,
+        await WordManager(databaseService: nil,
                     wordReaderService: MockWordListReader(words: nil),
                     randomWordPicker: MockRandomWordPicker(),
                     wordMeaningFetchingService: getMockDictionaryService())
@@ -120,7 +120,7 @@ final class WordManagerTests: XCTestCase {
     
     func test_WordManagerGetNextWordWithZeroStringCollection() async {
         let sut: WordManager =
-        WordManager(databaseService: nil,
+        await WordManager(databaseService: nil,
                     wordReaderService: MockWordListReader(words: []),
                     randomWordPicker: MockRandomWordPicker(),
                     wordMeaningFetchingService: getMockDictionaryService())
@@ -131,7 +131,7 @@ final class WordManagerTests: XCTestCase {
     
     func test_WordManagerGetNextWordNotAvailableWordInTheDictionary() async {
         let sut: WordManager =
-        WordManager(databaseService: nil,
+        await WordManager(databaseService: nil,
                     wordReaderService: MockWordListReader(words: ["bleed"]),
                     randomWordPicker: MockRandomWordPicker(),
                     wordMeaningFetchingService: getMockDictionaryService())
@@ -142,7 +142,7 @@ final class WordManagerTests: XCTestCase {
     
     func test_WordManagerGetNextWordAvailableWordInTheDictionary() async {
         let sut: WordManager =
-        WordManager(databaseService: MockDatabaseService(dictionary: getMockDictionaryService()),
+        await WordManager(databaseService: MockDatabaseService(dictionary: getMockDictionaryService()),
                     wordReaderService: MockWordListReader(words: ["blood"]),
                     randomWordPicker: MockRandomWordPicker(),
                     wordMeaningFetchingService: getMockDictionaryService())
@@ -153,7 +153,7 @@ final class WordManagerTests: XCTestCase {
     
     func test_WordManagerGetNextWordForMultipleTimes() async {
         let sut: WordManager =
-        WordManager(databaseService: MockDatabaseService(dictionary: getMockDictionaryService()),
+        await WordManager(databaseService: MockDatabaseService(dictionary: getMockDictionaryService()),
                     wordReaderService: MockWordListReader(words: words),
                     randomWordPicker: MockRandomWordPicker(),
                     wordMeaningFetchingService: getMockDictionaryService())
@@ -176,7 +176,7 @@ final class WordManagerTests: XCTestCase {
     
     func test_WordManagerGetPrevWordWithEmptyStringCollectionInTheFile() async {
         let sut: WordManager =
-        WordManager(databaseService: MockDatabaseService(dictionary: getMockDictionaryService()),
+        await WordManager(databaseService: MockDatabaseService(dictionary: getMockDictionaryService()),
                     wordReaderService: MockWordListReader(words: nil),
                     randomWordPicker: MockRandomWordPicker(),
                     wordMeaningFetchingService: getMockDictionaryService())
@@ -187,7 +187,7 @@ final class WordManagerTests: XCTestCase {
     
     func test_WordManagerGetPrevWordWithZeroStringCollection() async {
         let sut: WordManager =
-        WordManager(databaseService: MockDatabaseService(dictionary: getMockDictionaryService()),
+        await WordManager(databaseService: MockDatabaseService(dictionary: getMockDictionaryService()),
                     wordReaderService: MockWordListReader(words: []),
                     randomWordPicker: MockRandomWordPicker(),
                     wordMeaningFetchingService: getMockDictionaryService())
@@ -198,7 +198,7 @@ final class WordManagerTests: XCTestCase {
     
     func test_WordManagerGetPrevWordNotAvailableWordInTheDictionary() async {
         let sut: WordManager =
-        WordManager(databaseService: nil,
+        await WordManager(databaseService: nil,
                     wordReaderService: MockWordListReader(words: ["bleed"]),
                     randomWordPicker: MockRandomWordPicker(),
                     wordMeaningFetchingService: getMockDictionaryService())
@@ -209,7 +209,7 @@ final class WordManagerTests: XCTestCase {
     
     func test_WordManagerGetPrevWordCallWithNoNextWordCallAtFirst() async {
         let sut: WordManager =
-        WordManager(databaseService: MockDatabaseService(dictionary: getMockDictionaryService()),
+        await WordManager(databaseService: MockDatabaseService(dictionary: getMockDictionaryService()),
                     wordReaderService: MockWordListReader(words: ["blood"]),
                     randomWordPicker: MockRandomWordPicker(),
                     wordMeaningFetchingService: getMockDictionaryService())
@@ -220,7 +220,7 @@ final class WordManagerTests: XCTestCase {
     
     func test_WordManagerGetWordForWhomNetwordCallDoneAlready() async {
         let sut: WordManager =
-        WordManager(databaseService: MockDatabaseService(dictionary: getMockDictionaryService()),
+        await WordManager(databaseService: MockDatabaseService(dictionary: getMockDictionaryService()),
                     wordReaderService: MockWordListReader(words: words),
                     randomWordPicker: MockRandomWordPicker(),
                     wordMeaningFetchingService: getMockDictionaryService())
@@ -246,21 +246,21 @@ final class WordManagerTests: XCTestCase {
     
     func test_WordManagerFavouriteWordsSetGet() async {
         let sut: WordManager =
-        WordManager(wordReaderService: MockWordListReader(words: words),
+        await WordManager(wordReaderService: MockWordListReader(words: words),
                     randomWordPicker: MockRandomWordPicker(),
                     wordMeaningFetchingService: getMockDictionaryService())
         var prevCount = 0
-        if let prevFavs = sut.getFavouriteWords() {
+        if let prevFavs = await sut.getFavouriteWords() {
             prevCount = prevFavs.count
         }
         
         if let word1 = await sut.getNextWord() {
-            sut.markAsFavourite(word1)
+            await sut.markAsFavourite(word1)
             if let word2 = await sut.getNextWord() {
-                sut.markAsFavourite(word2)
+                await sut.markAsFavourite(word2)
                 
                 
-                let favouriteWords = sut.getFavouriteWords() ?? []
+                let favouriteWords = await sut.getFavouriteWords() ?? []
                 
                 XCTAssertNotNil(favouriteWords, "Favourite words should not be nil")
                 XCTAssertTrue(favouriteWords.count == prevCount + 2, "There should be 2 more fav words")
@@ -271,25 +271,25 @@ final class WordManagerTests: XCTestCase {
     
     func test_WordManagerFavouriteWordsUnsetGet() async {
         let sut: WordManager =
-        WordManager(wordReaderService: MockWordListReader(words: words),
+        await WordManager(wordReaderService: MockWordListReader(words: words),
                     randomWordPicker: MockRandomWordPicker(),
                     wordMeaningFetchingService: getMockDictionaryService())
         
         if let word1 = await sut.getNextWord() {
-            sut.markAsFavourite(word1)
+            await sut.markAsFavourite(word1)
             
             if let word2 = await sut.getNextWord() {
-                sut.markAsFavourite(word2)
+                await sut.markAsFavourite(word2)
                 
                 var prevCount = 0
-                if let prevFavs = sut.getFavouriteWords() {
+                if let prevFavs = await sut.getFavouriteWords() {
                     prevCount = prevFavs.count
                 }
                 
                 if let word = await sut.getNextWord() {
-                    sut.unmarkAsFavourite(word)
+                    await sut.unmarkAsFavourite(word)
                     
-                    let favouriteWords = sut.getFavouriteWords() ?? []
+                    let favouriteWords = await sut.getFavouriteWords() ?? []
                     
                     XCTAssertNotNil(favouriteWords, "Favourite words should not be nil")
                     XCTAssertTrue(favouriteWords.count == prevCount - 1, "There should be 1 less fav word")
@@ -299,11 +299,11 @@ final class WordManagerTests: XCTestCase {
         
     }
     
-    func test_WordManagerWithSameElementsInTheSameDay() {
-        let sut1: WordManager = WordManager()
-        let list1 = sut1.selectedWordsForToday
-        let sut2: WordManager = WordManager()
-        let list2 = sut2.selectedWordsForToday
+    func test_WordManagerWithSameElementsInTheSameDay() async {
+        let sut1: WordManager = await WordManager()
+        let list1 = await sut1.selectedWordsForToday
+        let sut2: WordManager = await WordManager()
+        let list2 = await sut2.selectedWordsForToday
         
         let sortedList1 = list1.sorted()
         let sortedList2 = list2.sorted()

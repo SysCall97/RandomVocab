@@ -10,24 +10,24 @@ import XCTest
 
 final class WordListReaderTests: XCTestCase {
     
-    func test_WordListReaderFromCSVFileNotFound() {
+    func test_WordListReaderFromCSVFileNotFound() async {
         let sut: AnyWordListReader = WordListReaderFromCSV()
         let nullFile = FileNameContainer.File(name: "", type: "")
-        
-        XCTAssertNil(sut.getWordList(from: nullFile), "No string collection should be returned")
+        let response = await sut.getWordList(from: nullFile)
+        XCTAssertNil(response, "No string collection should be returned")
     }
     
-    func test_WordListReaderFromCSVGetNILAfterGettingRightDataPreviously() {
+    func test_WordListReaderFromCSVGetNILAfterGettingRightDataPreviously() async {
         let sut: AnyWordListReader = WordListReaderFromCSV()
-        let _ = sut.getWordList(from: FileNameContainer.wordListCSV)
+        let _ = await sut.getWordList(from: FileNameContainer.wordListCSV)
         let nullFile = FileNameContainer.File(name: "", type: "")
-        
-        XCTAssertNil(sut.getWordList(from: nullFile), "No string collection should be returned")
+        let response = await sut.getWordList(from: nullFile)
+        XCTAssertNil(response, "No string collection should be returned")
     }
     
-    func test_WordListReaderFromCSVHappyPath() {
+    func test_WordListReaderFromCSVHappyPath() async {
         let sut: AnyWordListReader = WordListReaderFromCSV()
-        let wordCollection = sut.getWordList(from: FileNameContainer.wordListCSV)
+        let wordCollection = await sut.getWordList(from: FileNameContainer.wordListCSV)
         
         XCTAssertNotNil(wordCollection, "A string collection should be returned")
         XCTAssertTrue(wordCollection!.count > 0, "It must return a non-empty string collection")

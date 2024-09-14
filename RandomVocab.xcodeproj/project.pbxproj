@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		040396DA2C95545300CB6D77 /* FavouriteWordsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040396D82C95545300CB6D77 /* FavouriteWordsVC.swift */; };
+		040396DD2C95546C00CB6D77 /* FavouriteWordsVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 040396DC2C95546C00CB6D77 /* FavouriteWordsVC.storyboard */; };
 		043E39622C58A346005383E2 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043E39612C58A346005383E2 /* Errors.swift */; };
 		043E39642C58A39A005383E2 /* CommonConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043E39632C58A39A005383E2 /* CommonConstants.swift */; };
 		043E39662C58A7FE005383E2 /* WordListReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043E39652C58A7FE005383E2 /* WordListReaderTests.swift */; };
@@ -55,6 +57,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		040396D82C95545300CB6D77 /* FavouriteWordsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteWordsVC.swift; sourceTree = "<group>"; };
+		040396DC2C95546C00CB6D77 /* FavouriteWordsVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FavouriteWordsVC.storyboard; sourceTree = "<group>"; };
 		043E39612C58A346005383E2 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		043E39632C58A39A005383E2 /* CommonConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonConstants.swift; sourceTree = "<group>"; };
 		043E39652C58A7FE005383E2 /* WordListReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordListReaderTests.swift; sourceTree = "<group>"; };
@@ -114,6 +118,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		040396D72C95540E00CB6D77 /* FavouriteWordsVC */ = {
+			isa = PBXGroup;
+			children = (
+				040396D82C95545300CB6D77 /* FavouriteWordsVC.swift */,
+				040396DC2C95546C00CB6D77 /* FavouriteWordsVC.storyboard */,
+			);
+			path = FavouriteWordsVC;
+			sourceTree = "<group>";
+		};
 		043E39602C58A338005383E2 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
@@ -215,6 +228,7 @@
 		04A057812C6E6FA5005CBA96 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				040396D72C95540E00CB6D77 /* FavouriteWordsVC */,
 				04A057822C6E6FC0005CBA96 /* Main */,
 			);
 			path = ViewControllers;
@@ -365,6 +379,7 @@
 				049237BA2C55C11C004829E5 /* Assets.xcassets in Resources */,
 				049237E22C55C898004829E5 /* words.csv in Resources */,
 				049237B82C55C11B004829E5 /* Main.storyboard in Resources */,
+				040396DD2C95546C00CB6D77 /* FavouriteWordsVC.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -397,6 +412,7 @@
 				049237B12C55C11B004829E5 /* AppDelegate.swift in Sources */,
 				045484F92C72CF5100A16D63 /* WordViewModel.swift in Sources */,
 				043E39642C58A39A005383E2 /* CommonConstants.swift in Sources */,
+				040396DA2C95545300CB6D77 /* FavouriteWordsVC.swift in Sources */,
 				04EC69122C67A194001D02F1 /* SelectedWords.swift in Sources */,
 				04DF4A552C58D911008298E9 /* WordManager.swift in Sources */,
 				04E473AC2C5CB1A4002C962D /* DatabaseService.swift in Sources */,

@@ -85,7 +85,12 @@ extension ViewController {
     
     @objc
     internal func seeFavouriteWordsButtonPressed() {
-        print("seeFavouriteWordsButtonPressed")
+        Task {
+            let favouriteWordsVC = UIStoryboard(name: FavouriteWordsVC.storyboardName, bundle: nil).instantiateViewController(withIdentifier: FavouriteWordsVC.storyboardIdentifier) as! FavouriteWordsVC
+            favouriteWordsVC.wordManager = self.wordManager
+            self.modalPresentationStyle = .formSheet
+            self.present(favouriteWordsVC, animated: true)
+        }
     }
 }
 

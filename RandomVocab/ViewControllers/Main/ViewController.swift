@@ -189,9 +189,9 @@ extension ViewController {
         let labelSpacing: CGFloat = 10.0
         
         for meaning in meanings {
-            if let firstDefination = meaning.definitions.first {
+            if let firstDefinition = meaning.definitions.first {
                 let label = UILabel()
-                let text = "(\(meaning.partOfSpeech)): \(firstDefination.definition)"
+                let text = "(\(meaning.partOfSpeech)): \(firstDefinition.definition)"
                 
                 let font = UIFont.systemFont(ofSize: 16, weight: .medium)
                 let labelHeight = getLabelHeight(for: text, width: meaningsContainerScrollView.frame.width-20, font: font)

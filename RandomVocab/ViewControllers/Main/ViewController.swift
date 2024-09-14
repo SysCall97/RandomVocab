@@ -120,11 +120,9 @@ extension ViewController {
     
     private func renderViews(with viewModel: WordViewModel) {
         self.currentViewModel = viewModel
-        cancellable = currentViewModel?.$isMarkedAsFavourite.sink { [weak self] newValue in
-            if let weakSelf = self {
-                Task {
-                    await weakSelf.markAsFavouriteUpdated(to: newValue)
-                }
+        cancellable = currentViewModel?.$isMarkedAsFavourite.sink { [self] newValue in
+            Task {
+                await self.markAsFavouriteUpdated(to: newValue)
             }
         }
         let model = viewModel.wordModel

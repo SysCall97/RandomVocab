@@ -209,9 +209,9 @@ class FavouriteWordCell: UITableViewCell {
                 self.phoneticLabel.isHidden = false
             }
         }
-        if let audioLink = currentViewModel?.wordModel.phonetics?.audio {
-            self.phoneticsButton.isHidden = false
-        }
+        
+        self.phoneticsButton.isHidden = !viewModel.isPhoneticsHasAudibleFile
+        
     }
     
     @objc

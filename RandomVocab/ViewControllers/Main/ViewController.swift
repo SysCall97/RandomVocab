@@ -82,6 +82,11 @@ extension ViewController {
             }
         }
     }
+    
+    @objc
+    internal func seeFavouriteWordsButtonPressed() {
+        print("seeFavouriteWordsButtonPressed")
+    }
 }
 
 //MARK: private functions

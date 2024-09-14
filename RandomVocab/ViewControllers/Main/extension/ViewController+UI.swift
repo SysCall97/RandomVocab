@@ -16,6 +16,7 @@ extension ViewController {
         self.addPhoneticsButton()
         self.addButtons()
         self.addMeaningView()
+        self.addSeeAllFavouriteWords()
     }
 }
 
@@ -156,6 +157,24 @@ extension ViewController {
             self.meaningsContainerScrollView.bottomAnchor.constraint(equalTo: scrollViewContainerView.bottomAnchor),
             self.meaningsContainerScrollView.leadingAnchor.constraint(equalTo: scrollViewContainerView.leadingAnchor),
             self.meaningsContainerScrollView.trailingAnchor.constraint(equalTo: scrollViewContainerView.trailingAnchor)
+        ])
+    }
+    
+    private func addSeeAllFavouriteWords() {
+        let button = UIButton()
+        button.setTitle("See Favourite Words", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 15)
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 7
+        view.addSubview(button)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(seeFavouriteWordsButtonPressed), for: .touchUpInside)
+        
+        NSLayoutConstraint.activate([
+            button.widthAnchor.constraint(equalToConstant: 200),
+            button.heightAnchor.constraint(equalToConstant: 44),
+            button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            button.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5)
         ])
     }
 }

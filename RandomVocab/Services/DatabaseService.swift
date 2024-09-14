@@ -9,16 +9,16 @@ import Foundation
 import SwiftData
 
 protocol AnyDatabaseService {
-    func save(word: WordModel)
-    func fetchWords() throws -> [WordModel]?
-    func delete(word: WordModel) throws
-    func isExists(word: WordModel) throws -> Bool
+    func save(word: WordModel) async
+    func fetchWords() async throws -> [WordModel]?
+    func delete(word: WordModel) async throws
+    func isExists(word: WordModel) async throws -> Bool
     
-    func save(selectedWords: SelectedWords)
-    func fetchSelectedWords(with id: String) throws -> SelectedWords?
+    func save(selectedWords: SelectedWords) async
+    func fetchSelectedWords(with id: String) async throws -> SelectedWords?
 }
 
-class DatabaseService: AnyDatabaseService {
+actor DatabaseService: AnyDatabaseService {
     static var shared = DatabaseService()
     var container: ModelContainer?
     var context: ModelContext?

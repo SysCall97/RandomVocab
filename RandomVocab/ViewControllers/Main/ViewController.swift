@@ -11,6 +11,8 @@ import Combine
 
 @MainActor
 class ViewController: UIViewController {
+    static let storyboardName = "Main"
+    static let storyboardIdentifier = "ViewController"
     
     internal var label: UILabel!
     internal var phoneticsLabel: UILabel!
@@ -23,17 +25,17 @@ class ViewController: UIViewController {
     private var audioLink: String?
     private var currentViewModel: WordViewModel?
     private var cancellable: AnyCancellable?
-    var wordManager: AnyWordManager
+    var wordManager: AnyWordManager!
     
-    init(wordManager: AnyWordManager = WordManager()) {
-        self.wordManager = wordManager
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        self.wordManager = WordManager()
-        super.init(coder: coder)
-    }
+//    init(wordManager: AnyWordManager = WordManager()) {
+//        self.wordManager = wordManager
+//        super.init(nibName: nil, bundle: nil)
+//    }
+//    
+//    required init?(coder: NSCoder) {
+//        self.wordManager = WordManager()
+//        super.init(coder: coder)
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,11 +72,13 @@ extension ViewController {
     
     @objc
     internal func toggleFavouriteStatus() {
-        if let currentViewModel {
-            if currentViewModel.isMarkedAsFavourite {
-                wordManager.unmarkAsFavourite(currentViewModel)
-            } else {
-                wordManager.markAsFavourite(currentViewModel)
+        Task {
+            if let currentViewModel {
+                if currentViewModel.isMarkedAsFavourite {
+                    await wordManager.unmarkAsFavourite(currentViewModel)
+                } else {
+                    await wordManager.markAsFavourite(currentViewModel)
+                }
             }
         }
     }
@@ -108,7 +112,9 @@ extension ViewController {
         self.currentViewModel = viewModel
         cancellable = currentViewModel?.$isMarkedAsFavourite.sink { [weak self] newValue in
             if let weakSelf = self {
-                weakSelf.markAsFavouriteUpdated(to: newValue)
+                Task {
+                    await weakSelf.markAsFavouriteUpdated(to: newValue)
+                }
             }
         }
         let model = viewModel.wordModel
@@ -155,12 +161,12 @@ extension ViewController {
         self.render(meanings: model.meanings)
     }
     
-    private func markAsFavouriteUpdated(to newValue: Bool) {
+    private func markAsFavouriteUpdated(to newValue: Bool) async {
+        var starImage = UIImage(systemName: "star")?.withRenderingMode(.alwaysTemplate)
         if newValue {
-            let starImage = UIImage(systemName: "star.fill")?.withRenderingMode(.alwaysTemplate)
-            markAsFavouriteButton.setImage(starImage, for: .normal)
-        } else {
-            let starImage = UIImage(systemName: "star")?.withRenderingMode(.alwaysTemplate)
+            starImage = UIImage(systemName: "star.fill")?.withRenderingMode(.alwaysTemplate)
+        }
+        await MainActor.run {
             markAsFavouriteButton.setImage(starImage, for: .normal)
         }
     }

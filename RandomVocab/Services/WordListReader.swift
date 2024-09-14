@@ -8,10 +8,10 @@
 import Foundation
 
 protocol AnyWordListReader {
-    func getWordList(from file: FileNameContainer.File) -> [String]?
+    func getWordList(from file: FileNameContainer.File) async -> [String]?
 }
 
-final class WordListReaderFromCSV: AnyWordListReader {
+actor WordListReaderFromCSV: AnyWordListReader {
     
     func getWordList(from file: FileNameContainer.File) -> [String]? {
         guard let path = Bundle.main.path(forResource: file.name, ofType: file.type) else {

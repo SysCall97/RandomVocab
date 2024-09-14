@@ -14,10 +14,8 @@ import Foundation
         - provide max 5 words per day
  */
 protocol AnyWordManager {
-//    var databaseService: AnyDatabaseService? { get set }
-//    var wordReaderService: AnyWordListReader { get set }
-//    var wordMeaningFetchingService: AnyDictionaryNetworkService { get set }
-//    var randomWordPicker: AnyRandomWordPicker { get set }
+    func isFirstWord() async -> Bool
+    func isLastWord() async -> Bool
     func initiateAllWordViewModels() async
     func getNextWord() async -> WordViewModel?
     func getPrevWord() async -> WordViewModel?
@@ -73,6 +71,14 @@ actor WordManager: AnyWordManager {
         }
     }
     
+    func isFirstWord() -> Bool {
+        self.currentPosition == 0
+    }
+    
+    func isLastWord() -> Bool {
+        self.currentPosition == self.dictionary.keys.count - 1
+    }
+    
     func initiateAllWordViewModels() async {
         await withTaskGroup(of: (Int, WordViewModel?).self) { group in
             for (index, word) in selectedWordsForToday.enumerated() {
@@ -91,6 +97,11 @@ actor WordManager: AnyWordManager {
     }
     
     func reset() {
+        print("RESET:: \(dictionary.keys.count)")
+        self.selectedWordsForToday.removeAll()
+        self.dictionary.keys.forEach { key in
+            self.selectedWordsForToday.append(key)
+        }
         self.currentPosition = -1
     }
     
@@ -107,7 +118,12 @@ actor WordManager: AnyWordManager {
             return dictionary[word]
         }
         
-        return await createViewModel(for: word)
+        let viewModel = await createViewModel(for: word)
+        guard let viewModel else {
+            selectedWordsForToday.remove(at: currentPosition)
+            return await self.getNextWord()
+        }
+        return viewModel
     }
     
     func getPrevWord() async -> WordViewModel? {
@@ -123,7 +139,12 @@ actor WordManager: AnyWordManager {
             return dictionary[word]
         }
         
-        return await createViewModel(for: word)
+        let viewModel = await createViewModel(for: word)
+        guard let viewModel else {
+            selectedWordsForToday.remove(at: currentPosition)
+            return await self.getPrevWord()
+        }
+        return viewModel
     }
     
     func markAsFavourite(_ wordViewModel: WordViewModel) async {

@@ -156,14 +156,17 @@ extension ViewController {
         self.previousButton.isUserInteractionEnabled = true
         self.nextButton.layer.opacity = 1
         self.previousButton.layer.opacity = 1
-        
-        if viewModel.serialNo == CommonConstants.MAX_WORD_LIMIT {
-            self.nextButton.isUserInteractionEnabled = false
-            self.nextButton.layer.opacity = 0.6
-        }
-        if viewModel.serialNo == 1 {
-            self.previousButton.isUserInteractionEnabled = false
-            self.previousButton.layer.opacity = 0.6
+        Task {
+            let isLastWord = await wordManager.isLastWord()
+            if isLastWord {
+                self.nextButton.isUserInteractionEnabled = false
+                self.nextButton.layer.opacity = 0.6
+            }
+            let isFirstWord = await wordManager.isFirstWord()
+            if isFirstWord {
+                self.previousButton.isUserInteractionEnabled = false
+                self.previousButton.layer.opacity = 0.6
+            }
         }
         
         self.render(meanings: model.meanings)

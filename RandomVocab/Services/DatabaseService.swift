@@ -22,7 +22,7 @@ actor DatabaseService: AnyDatabaseService {
     static var shared = DatabaseService()
     var container: ModelContainer?
     var context: ModelContext?
-    
+
     private init() {
         do {
             let schema = Schema([
@@ -77,12 +77,20 @@ actor DatabaseService: AnyDatabaseService {
     }
     
     func delete(word: WordModel) throws {
-        do {
-            context?.delete(word)
-            try context?.save()
-        } catch {
-            throw DatabaseError.deleteError
-        }
+        let id = word.id
+        let fetchDescriptor = FetchDescriptor<WordModel>(predicate: #Predicate { $0.id == id })
+            
+            do {
+                let fetchedModels = try context?.fetch(fetchDescriptor)
+                if let wordModel = fetchedModels?.first {
+                    context?.delete(wordModel)
+                    try context?.save() // Save the changes after deletion
+                } else {
+                    print("No WordModel found with the id: \(id)")
+                }
+            } catch {
+                print("Failed to delete WordModel: \(error)")
+            }
     }
     
     func isExists(word: WordModel) throws -> Bool {

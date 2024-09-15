@@ -43,4 +43,16 @@ class WordModel {
             meanings.append(contentsOf: res.meanings)
         }
     }
+    
+    
+    init(from model: WordModel) {
+        self.id = model.id
+        self.word = model.word
+        self.phonetics = APIResponseDataModel.Phonetic(text: model.phonetics?.text, audio: model.phonetics?.audio)
+        self.meanings = []
+        model.meanings.forEach { meaning in
+            self.meanings.append(APIResponseDataModel.Meaning(partOfSpeech: meaning.partOfSpeech, definitions: meaning.definitions))
+        }
+        
+    }
 }

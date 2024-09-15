@@ -151,7 +151,8 @@ actor WordManager: AnyWordManager {
         let _ = await getFavouriteWords()
         if !(favouriteWords?.contains(where: { $0.wordModel.id == wordViewModel.wordModel.id }) ?? false) {
             favouriteWords?.append(wordViewModel)
-            await databaseService?.save(word: wordViewModel.wordModel)
+            let model = WordModel(from: wordViewModel.wordModel)
+            await databaseService?.save(word: model)
             wordViewModel.isMarkedAsFavourite = true
         }
         

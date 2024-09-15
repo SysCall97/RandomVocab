@@ -35,10 +35,15 @@ RandomVocab is an iOS app that helps users expand their vocabulary by displaying
 ## Screenshots
 
 <p align="center">
-  <img src="./Screenshots/home_screen.png" alt="Home Screen" width="300" />
-  <img src="./Screenshots/favorite_words.png" alt="Favorite Words Screen" width="300" />
+  <img src="./Screenshots/homePage.png" alt="Home Page" width="200" style="margin-right: 20px;" />
+  <img src="./Screenshots/homePage_with_fav.png" alt="Home Page with Favorite" width="200" style="margin-right: 20px;" />
+  <img src="./Screenshots/favoritePage.png" alt="Favorite Page" width="200" style="margin-right: 20px;" />
+  <img src="./Screenshots/favoritePage_with_del_action.png" alt="Favorite Page with Delete Action" width="200" />
 </p>
 
 <p align="center">
-  <b>Home Screen</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Favorite Words Screen</b>
+  Home Page &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Home Page with Favorite &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  Favorite Page &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Favorite Page with Delete Action
 </p>
+
+

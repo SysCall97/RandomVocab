@@ -34,16 +34,20 @@ RandomVocab is an iOS app that helps users expand their vocabulary by displaying
 
 ## Screenshots
 
-<p align="center">
-  <img src="./Screenshots/homePage.png" alt="Home Page" width="200" style="margin-right: 20px;" />
-  <img src="./Screenshots/homePage_with_fav.png" alt="Home Page with Favorite" width="200" style="margin-right: 20px;" />
-  <img src="./Screenshots/favoritePage.png" alt="Favorite Page" width="200" style="margin-right: 20px;" />
-  <img src="./Screenshots/favoritePage_with_del_action.png" alt="Favorite Page with Delete Action" width="200" />
-</p>
+<table align="center">
+  <tr>
+    <td><img src="./Screenshots/homePage.png" alt="Home Page" width="200" /></td>
+    <td><img src="./Screenshots/homePage_with_fav.png" alt="Home Page with Favorite" width="200" /></td>
+    <td><img src="./Screenshots/favoritePage.png" alt="Favorite Page" width="200" /></td>
+    <td><img src="./Screenshots/favoritePage_with_del_action.png" alt="Favorite Page with Delete Action" width="200" /></td>
+  </tr>
+  <tr>
+    <td style="text-align: center;">(1) Home Page</td>
+    <td style="text-align: center;">(2) Home Page with Favorite</td>
+    <td style="text-align: center;">(3) Favorite Page</td>
+    <td style="text-align: center;">(4) Favorite Page with Delete Action</td>
+  </tr>
+</table>
 
-<p align="center">
-  Home Page &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Home Page with Favorite &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  Favorite Page &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Favorite Page with Delete Action
-</p>
 
 

@@ -18,39 +18,44 @@ protocol AnyDatabaseService {
     func fetchSelectedWords(with id: String) async throws -> SelectedWords?
 }
 
-actor DatabaseService: AnyDatabaseService {
+actor DatabaseService: AnyDatabaseService, ModelActor {
+    nonisolated let modelContainer: ModelContainer
+    nonisolated let modelExecutor: ModelExecutor
+    
     static var shared = DatabaseService()
-    var container: ModelContainer?
-    var context: ModelContext?
-
-    private init() {
+    
+    static let modelContainer: ModelContainer = {
         do {
             let schema = Schema([
                 WordModel.self,
                 SelectedWords.self
             ])
-            
             let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-            container = try ModelContainer(for: schema, configurations: modelConfiguration)
-            
-            if let container {
-                context = ModelContext(container)
-            }
+            return try ModelContainer(for: schema, configurations: modelConfiguration)
         } catch {
-            print(error.localizedDescription)
+            fatalError()
         }
+    }()
+    var context: ModelContext?
+    
+    private init() {
+        let container = DatabaseService.modelContainer
+        self.modelContainer = container
+        self.context = ModelContext(container)
+        self.modelExecutor = DefaultSerialModelExecutor(modelContext: context!)
     }
     
-    func save(word: WordModel) {
+    func save(word: WordModel) async {
         do {
-            let existingWords = try fetchWord(with: word.id)
+            let existingWords = try await fetchWord(with: word.id)
             if existingWords?.isEmpty == false {
                 print("Word with ID \(word.id) already exists")
                 return
             }
             context?.insert(word)
+            try context?.save()
         } catch {
-            print(error.localizedDescription)
+            print("Failed to save word: \(error.localizedDescription)")
         }
     }
     
@@ -111,6 +116,7 @@ extension DatabaseService {
                 return
             }
             context?.insert(selectedWords)
+            try context?.save()
         } catch {
             print(error.localizedDescription)
         }
